@@ -7,7 +7,10 @@
     "light": "#F5D547",
     "dark": "#B8940A"
   },
-  "favicon": "/favicon.svg",
+  "favicon": {
+    "light": "/yellow-logo.svg",
+    "dark": "/yellow-logo.svg"
+  },
   "navigation": {
     "tabs": [
       {
@@ -170,5 +173,9 @@
       "x": "https://x.com/yellow",
       "website": "https://yellow.pro"
     }
+  },
+  "logo": {
+    "light": "/yellow-logo.svg",
+    "dark": "/yellow-logo.svg"
   }
 }
