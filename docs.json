@@ -7,7 +7,10 @@
     "light": "#F5D547",
     "dark": "#B8940A"
   },
-  "favicon": "/favicon.svg",
+  "favicon": {
+    "light": "/yellow-logo.svg",
+    "dark": "/yellow-logo.svg"
+  },
   "navigation": {
     "tabs": [
       {
@@ -173,6 +176,7 @@
   },
   "logo": {
     "light": "/logo/yellow-guide.svg",
-    "dark": "/logo/yellow-guide-dark.svg"
+    "dark": "/logo/yellow-guide-dark.svg",
+    "href": "https://yellow-pro.mintlify.site/"
   }
 }
