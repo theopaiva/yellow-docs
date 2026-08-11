@@ -7,10 +7,7 @@
     "light": "#F5D547",
     "dark": "#B8940A"
   },
-  "favicon": {
-    "light": "/yellow-logo.svg",
-    "dark": "/yellow-logo.svg"
-  },
+  "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
@@ -175,7 +172,7 @@
     }
   },
   "logo": {
-    "light": "/yellow-logo.svg",
-    "dark": "/yellow-logo.svg"
+    "light": "/logo/yellow-guide.svg",
+    "dark": "/logo/yellow-guide-dark.svg"
   }
 }
