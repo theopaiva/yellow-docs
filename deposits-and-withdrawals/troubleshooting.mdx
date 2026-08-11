@@ -1,0 +1,83 @@
+---
+title: "Deposit & Withdrawal Troubleshooting"
+description: "Identify and resolve common deposit and withdrawal issues before contacting support."
+---
+
+Use this guide to diagnose common deposit and withdrawal issues. For network, asset, limit, and irreversibility rules, see [Supported Networks, Assets & Limits](/deposits-and-withdrawals/supported-networks-assets-limits).
+
+<Tabs>
+<Tab title="Deposits">
+<Accordion title="Balance hasn't updated after a deposit">
+
+* **External wallet, ERC-20 token:** make sure you completed **both** the Approval and the Deposit transaction. Approval only grants permission — if the Deposit step wasn't confirmed, funds stay in your wallet. Return to the Deposit page and check whether the button shows **Deposit**.
+* **Google Sign-in:** deposits first appear in **Account Balance (`Yellow Wallet`)**, not the Trading Account. Open the Assets page; if the funds are there, transfer them to the Trading Account (`Spot Account`) before trading.
+
+</Accordion>
+
+<Accordion title="Funds are in Account Balance instead of Trading Account">
+
+This is expected for Google Sign-in users — deposits arrive in Account Balance (`Yellow Wallet`) first. Open the Assets page, click **Transfer**, and move funds from Account Balance → Trading Account (`Spot Account`). See [How to Transfer Funds Between Accounts](/account-and-balance/transfer-funds-between-accounts).
+
+</Accordion>
+
+<Accordion title="Deposit has been pending for a long time">
+
+During congestion, deposits can take longer. Check status on a blockchain explorer (`etherscan.io`) using your deposit address or sending wallet address, or on the Deposit History page (`yellow.pro/assets/history`). Deposits need 15 confirmations. If it still hasn't reflected after the expected time, contact support with your transaction hash, wallet address, token, and amount.
+
+</Accordion>
+
+<Accordion title="Funds sent to the wrong network or address">
+
+Deposits sent on an unsupported network or to an incorrect address cannot be credited or recovered. Only Ethereum is supported. Always copy the deposit address directly from the Deposit page and confirm the network before sending.
+
+</Accordion>
+
+<Accordion title="Transaction failed">
+
+The funds were not transferred and remain in your wallet. Retry from the Deposit page. For ETH, no Approval is required — just retry the Deposit transaction.
+
+</Accordion>
+</Tab>
+
+<Tab title="Withdrawals">
+<Accordion title="Withdrawal cannot be initiated">
+
+Possible causes: funds aren't in the correct account (External → Trading Account; Google → Account Balance), available balance is reduced by open orders or positions, required transfers aren't complete, or the amount is below the minimum. Verify fund location, close restricting orders/positions, complete required transfers, and check the [minimum amounts](/deposits-and-withdrawals/supported-networks-assets-limits).
+
+</Accordion>
+
+<Accordion title="Funds not showing as withdrawable / insufficient balance">
+
+Your available balance is likely reduced by funds locked in open orders or active perpetual positions, funds not yet in the correct account, or funds still processing during a transfer. Close or adjust trading activity and confirm fund location for your account type.
+
+</Accordion>
+
+<Accordion title="Withdrawal pending or delayed">
+
+Usually Ethereum network congestion or normal confirmation time (minutes, up to \~1 hour). Check status with your TxID at `yellow.pro/assets/history`. If not completed after 1 hour, contact support with your TxID.
+
+</Accordion>
+
+<Accordion title="Completed on-chain but not received">
+
+The transaction may still be processing on the receiving side, or the receiving platform has its own delays. Check your TxID at `yellow.pro/assets/history`, wait for confirmations, and contact the receiving wallet or exchange with your TxID.
+
+</Accordion>
+
+<Accordion title="Wrong network, wrong address, or unsupported platform">
+
+Blockchain transactions are irreversible. Funds sent to an incorrect address or unsupported network may not be recoverable — especially if the receiving platform doesn't support smart wallet abstraction. Contact the receiving platform with your TxID. Yellow.pro supports Ethereum only.
+
+</Accordion>
+
+<Accordion title="Received less than expected">
+
+The Ethereum network fee is deducted from the withdrawal amount. Compare the withdrawal amount, network fee, and final received amount in your history. Fees are shown before you confirm.
+
+</Accordion>
+</Tab>
+</Tabs>
+
+## Contacting Support
+
+When reporting a deposit or withdrawal issue, include your Yellow.pro wallet address, external wallet address (if applicable), transaction hash (TxID), token and network, amount, and a brief description (a screenshot helps). This lets the team investigate faster. See [Contact Support](/community-and-resources/contact-support).

@@ -1,0 +1,186 @@
+---
+title: "Glossary of Terms"
+description: "Definitions of key terms used across Yellow.pro."
+---
+
+Key terms used throughout Yellow.pro and this documentation.
+
+<Accordion title="Account Balance (Yellow Wallet)">
+
+For Google Sign-in users, the main balance where deposits first arrive and from which withdrawals are made. Funds must be transferred to the Trading Account before trading. Also accessible on Yellow.com. External wallet users do not use Account Balance. See [Understanding Your Balances](/account-and-balance/understanding-your-balances).
+
+</Accordion>
+
+<Accordion title="ADL (Auto-Deleveraging)">
+
+The mechanism that settles liquidations on Yellow.pro: a liquidated position is matched against opposing traders, whose positions are partially closed. Priority is highest for the most profitable, highest-leverage positions on the opposite side. See [Cross-Margin Risk & ADL](/perpetual-trading/risk-and-liquidation/cross-margin-risk-and-adl).
+
+</Accordion>
+
+<Accordion title="Available Balance">
+
+Funds you can use right now — for new orders or withdrawals. Equals total balance minus funds locked **In Orders** or committed as position margin.
+
+</Accordion>
+
+<Accordion title="Bankruptcy Price">
+
+The mark price at which your account equity reaches zero. It sits just beyond your liquidation price, and is the price your position is force-settled at during liquidation. See [Liquidation & Mark Price](/perpetual-trading/risk-and-liquidation/liquidation-and-mark-price).
+
+</Accordion>
+
+<Accordion title="Base / Quote Currency">
+
+In a pair like `ETH-USDT`, the **base** currency is the asset being bought or sold (ETH) and the **quote** currency is what you pay or receive (USDT).
+
+</Accordion>
+
+<Accordion title="Cross Margin">
+
+The margin mode used on Yellow.pro perpetuals, where your entire available balance is shared collateral for all open positions. See [Margin & Leverage](/perpetual-trading/margin-and-leverage).
+
+</Accordion>
+
+<Accordion title="Funding Fee">
+
+A payment exchanged between long and short perpetual traders (usually every 8 hours) to keep the contract price near the market price. Not collected by Yellow.pro. See [Funding Fees Explained](/fees/funding-fees-explained).
+
+</Accordion>
+
+<Accordion title="Leverage">
+
+A multiplier that lets you open a position larger than your margin (e.g. 10x). Amplifies both gains and losses. See [Margin & Leverage](/perpetual-trading/margin-and-leverage).
+
+</Accordion>
+
+<Accordion title="Limit Order">
+
+An order to buy or sell at a specified price or better. Fills only at that price or better, and may not fill at all. See [Order Types](/spot-trading/order-types).
+
+</Accordion>
+
+<Accordion title="Liquidation">
+
+The automatic closure of a position when your account can no longer meet maintenance margin (margin ratio reaches 100%). See [Liquidation & Mark Price](/perpetual-trading/risk-and-liquidation/liquidation-and-mark-price).
+
+</Accordion>
+
+<Accordion title="Liquidation Price">
+
+The estimated mark price at which your account would be liquidated — where your equity falls to the maintenance margin level. In cross margin it moves with your PnL, positions, and balance. See [Liquidation & Mark Price](/perpetual-trading/risk-and-liquidation/liquidation-and-mark-price).
+
+</Accordion>
+
+<Accordion title="Maintenance Margin">
+
+The minimum margin required to keep a position open. If your effective margin falls below it, liquidation is triggered. On current markets the maintenance margin rate is a flat 0.5% of position notional.
+
+</Accordion>
+
+<Accordion title="Maker / Taker">
+
+A **maker** order adds liquidity by resting in the order book; a **taker** order removes liquidity by filling immediately. Maker fees are lower. See [Trading Fees](/fees/trading-fees).
+
+</Accordion>
+
+<Accordion title="Margin Ratio">
+
+A real-time indicator of how close your account is to liquidation. At 100%, liquidation is triggered. See [Margin & Leverage](/perpetual-trading/margin-and-leverage).
+
+</Accordion>
+
+<Accordion title="Market Order">
+
+An order that executes immediately at the best available price. Subject to slippage. See [Order Types](/spot-trading/order-types).
+
+</Accordion>
+
+<Accordion title="Mark Price">
+
+A fair-value price derived from external reference data, used to calculate unrealized PnL and liquidation — instead of the last traded price — to reduce manipulation. See [Liquidation & Mark Price](/perpetual-trading/risk-and-liquidation/liquidation-and-mark-price).
+
+</Accordion>
+
+<Accordion title="Network Fee">
+
+A blockchain transaction fee (currently Ethereum) for processing deposits and withdrawals on-chain. Set by the network, not Yellow.pro. See [Withdrawal Network Fees Explained](/fees/withdrawal-network-fees).
+
+</Accordion>
+
+<Accordion title="Perpetual Account">
+
+A separate balance used only for perpetual futures positions. Funds must be transferred here before opening perpetual positions, and cannot be withdrawn directly. See [Understanding Your Balances](/account-and-balance/understanding-your-balances).
+
+</Accordion>
+
+<Accordion title="Perpetual Contract">
+
+A derivative that tracks an asset's price with no expiry date. You never own the underlying asset. See [What is Perpetual Trading?](/perpetual-trading/what-is-perpetual-trading).
+
+</Accordion>
+
+<Accordion title="PnL (Realized / Unrealized)">
+
+Profit and Loss. **Unrealized** PnL is the current gain/loss on an open position (changes with the mark price); **Realized** PnL is locked in when you close. See [Understanding PnL](/perpetual-trading/pnl).
+
+</Accordion>
+
+<Accordion title="Position (Long / Short)">
+
+Going **long** profits when the price rises; going **short** profits when it falls. See [Long, Short & Hedge Mode](/perpetual-trading/long-short-hedge-mode).
+
+</Accordion>
+
+<Accordion title="In Orders">
+
+The balance state for funds locked by active open orders (and, on Spot, by a withdrawal that's still processing). They return to Available when the order is filled or cancelled. On Perpetuals, funds can be In Orders too, but there is no withdrawal step.
+
+</Accordion>
+
+<Accordion title="Spot Trading">
+
+The direct exchange of one asset for another at the current market price — you own the asset you buy. See [What is Spot Trading?](/spot-trading/what-is-spot-trading).
+
+</Accordion>
+
+<Accordion title="Stop Limit / Stop Market">
+
+Conditional orders that activate at a trigger price, then submit a limit order (stop limit) or a market order (stop market). See [Order Types](/spot-trading/order-types).
+
+</Accordion>
+
+<Accordion title="Tick Size / Step Size">
+
+**Tick size** is the smallest allowed price increment; **step size** is the smallest allowed quantity increment for a market. Orders that don't align are rejected.
+
+</Accordion>
+
+<Accordion title="Trading Account (Spot Account)">
+
+The balance where Spot trading takes place. For external wallet users, deposits arrive here directly. See [Understanding Your Balances](/account-and-balance/understanding-your-balances).
+
+</Accordion>
+
+<Accordion title="Time in Force (TIF)">
+
+How long an order stays active before it's cancelled. **GTC** (Good 'Til Cancelled) rests until filled or cancelled — the default for limit orders; **IOC** (Immediate Or Cancel) fills what it can immediately and cancels the rest; **FOK** (Fill Or Kill) must fill completely and immediately or not at all. Market orders are always IOC. See [Order Types](/spot-trading/order-types#time-in-force-tif).
+
+</Accordion>
+
+<Accordion title="Two-Way Mode (Hedge Mode)">
+
+A position mode that lets you hold a long and a short on the same pair simultaneously — currently the default on Yellow.pro. One-Way Mode will be added later. See [Long, Short & Hedge Mode](/perpetual-trading/long-short-hedge-mode).
+
+</Accordion>
+
+<Accordion title="VIP Tier">
+
+Your fee level, set automatically by 30-day trading volume or your $YELLOW balance. Higher tiers pay lower maker/taker fees. See [VIP Tiers & Fee Discounts](/fees/vip-tiers).
+
+</Accordion>
+
+<Accordion title="$YELLOW">
+
+Yellow.pro's native token. Holding a 24-hour average in your Trading Account qualifies you for higher VIP tiers and lower fees. See [$YELLOW Token & Fee Discounts](/fees/yellow-token-fee-discount).
+
+</Accordion>

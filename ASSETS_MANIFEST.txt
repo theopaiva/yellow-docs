@@ -1,0 +1,41 @@
+# Asset ID	Alt text / usage	First used on page
+1zE77szaQK2CetxqxmSV	Connect via External Wallet	getting-started/connect-your-wallet.mdx
+3HIw9I8Wx3URTUxQsrhH	Transfer History	account-and-balance/understanding-transfers.mdx
+5RrBQnlYcLeB7164Uu53	Withdraw To External Wallet From Account Balance	deposits-and-withdrawals/how-to-withdraw.mdx
+5kO6ah9yNGHvSQsBgNdu	(no alt)	portfolio/position-history.mdx
+6OoczhMQS8cNxJiYMIs5	The leverage selector on an open position	perpetual-trading/position-management/adjusting-margin-and-leverage.mdx
+76ISdFrVI2CimYmxMATc	A long and a short position held on the same market at the same time in Two-Way (Hedge) Mode	perpetual-trading/long-short-hedge-mode.mdx
+7lD9KOsRoqvAuNzPen8Q	(no alt)	competitions/everything-about-competitions.mdx
+9w1rbTedZsAQzbgVgCJl	Cancelling an open order from the Open Orders tab	spot-trading/how-to-place-a-spot-trade.mdx
+ABRjjUCTGL3NXYTXwhi8	Linking an email to receive liquidation and margin-warning notifications	perpetual-trading/risk-and-liquidation/margin-warnings-and-risk-management.mdx
+CTzjJHsitQPxeOe0E1Sa	Deposit To Account Balance (Gmail Sign-in)	deposits-and-withdrawals/how-to-deposit.mdx
+K0Mncg0MBxF5dFDxNHLv	Connect via WalletConnect	getting-started/connect-your-wallet.mdx
+KQkHcFOvcw1KVmrGokEc	External Wallet Deposit	deposits-and-withdrawals/how-to-deposit.mdx
+L4uQwOrwQNj7lqejOZso	Minimum Amount For Withdrawal	account-and-balance/why-funds-not-transferable.mdx
+LkMktFwoQ7SPGewzkzI5	The order form with the order-type selector	spot-trading/how-to-place-a-spot-trade.mdx
+N3ADFhZzKIJ2XPjoOh9j	The Trade History (fill history) view	spot-trading/managing-orders.mdx
+NYWCXT1IDR6lC21MOkJQ	Closing a position with the ✕ button in the Positions panel	perpetual-trading/position-management/closing-a-position.mdx
+NirtxyTtGFurnMrT7uiL	Transfer Between Trading (Spot) and Perpetual Account	account-and-balance/transfer-funds-between-accounts.mdx
+OKKTgTUWQhdvNi5h2FhQ	Locked Funds In Spot Orders	account-and-balance/why-funds-not-transferable.mdx
+S6hKbZx82LospyUzIi42	Perpetual Account -> Spot Account -> Account Balance Transfer	account-and-balance/transfer-funds-between-accounts.mdx
+UUD6tSdlBroaIgQDqz1p	(no alt)	getting-started/users-journey.mdx
+UmFR5y0VJweo9rh87g66	Recent Transfers Records	account-and-balance/understanding-transfers.mdx
+V0vxsFSiCtnPCDy9THAL	Selecting a market on the Yellow.pro trading interface	spot-trading/how-to-place-a-spot-trade.mdx
+Wj9FLkzfUzRZXzGnlNNQ	Closing through the order form's Close tab	perpetual-trading/position-management/closing-a-position.mdx
+Yrg3U3vhETSuKzIpOCb1	A liquidation entry in trade history	perpetual-trading/risk-and-liquidation/liquidation-and-mark-price.mdx
+hVrRMUdIjImK4TzGSwIo	The Order History view	spot-trading/managing-orders.mdx
+j7jGz4p5ujUVQGV4s9G9	Connect via Google Account	getting-started/connect-your-wallet.mdx
+ldcqjhHgHscpiE0ybSke	(no alt)	competitions/yellow-perps-race-edition-ii.mdx
+mLg2wWUiQuo21qXQoItL	A filled order shown in trade history	spot-trading/how-to-place-a-spot-trade.mdx
+mRESlVEuZL3SZAaWSb1f	Locked Funds In Perpetual Orders	account-and-balance/why-funds-not-transferable.mdx
+n3dre1O3vyzXAdR6vxhA	Account Balance To Trading Account Transfer	account-and-balance/transfer-funds-between-accounts.mdx
+nnZk3sx4SvOhC03Xgs7E	(no alt)	portfolio/portfolio-overview.mdx
+oV6SDJNtvZ1XftrqybEA	An open order shown in the Open Orders panel	spot-trading/how-to-place-a-spot-trade.mdx
+tBQnwECbyamq5VhLjjoq	Perpetual Account Balance	account-and-balance/understanding-your-balances.mdx
+vIIXTgl5fg733QKySE6M	Setting a Take Profit / Stop Loss order in the order form	spot-trading/order-types.mdx
+vieLkuTdFalevOdm6gVC	Trading (Spot) Account Balance	account-and-balance/understanding-your-balances.mdx
+vpQiyLjNWxdjnBZzgeR0	(no alt)	getting-started/connect-your-wallet.mdx
+wJqmCx3xxmMtfMg7knJI	Withdrawal via External Wallet	deposits-and-withdrawals/how-to-withdraw.mdx
+y6IEaLYlpc7xEMcpMQ9S	(no alt)	competitions/everything-about-competitions.mdx
+zM2jdbY6SDAwYqzDF8Kg	The order form with a conditional (stop) order selected	spot-trading/order-types.mdx
+znq2NPPhdKcCLpk0Yt0j	Unrealized and realized PnL shown on a position	perpetual-trading/pnl.mdx

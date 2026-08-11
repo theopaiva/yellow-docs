@@ -1,0 +1,62 @@
+---
+title: "Contract Specifications"
+description: "Perpetual contract specifications — tick size, step size, minimum order size and value, price band, max leverage, and maintenance margin — and why an order might not be accepted."
+---
+
+Every perpetual order is checked against the contract's rules **before it's accepted**. An order that breaks any rule is **not created** — the platform blocks it at submission, so it never enters the order book or your Order History. **If you're unable to place an order, one of the rules below is the most likely reason.** This page lists the rules and the current values for each perpetual contract.
+
+## Order Validation Rules
+
+| Rule                   | What it means                                                                       | You can't place the order if…                                    |
+| ---------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **Tick size**          | The smallest allowed price increment. Your price must be an exact multiple of it.   | Price is not a multiple of the tick size.                        |
+| **Step size**          | The smallest allowed amount increment. Your amount must be an exact multiple of it. | Amount is not a multiple of the step size.                       |
+| **Minimum order size** | The smallest amount (in the base asset) you can trade.                              | Amount is below the minimum.                                     |
+| **Maximum order size** | The largest amount (in the base asset) per order.                                   | Amount is above the maximum.                                     |
+| **Minimum notional**   | The smallest order *value* (price × amount, in USDT).                               | Order value is below the minimum notional.                       |
+| **Price band**         | A limit price must stay within a range around the reference (mark) price.           | Price is below **50%** or above **150%** of the reference price. |
+| **Maximum leverage**   | The highest leverage allowed on the contract.                                       | Selected leverage exceeds the maximum.                           |
+| **Available margin**   | You must have enough free margin to open or increase the position.                  | Available margin is insufficient.                                |
+
+<Info>
+The **price band** is why a limit order placed far from the current price can be blocked even when its price is otherwise valid. It prevents fat-finger orders and trades at unrealistic prices.
+</Info>
+
+## Contract Specifications
+
+| Contract         | Min order | Max order     | Step size | Tick size | Price band              | Min notional | Max leverage | Maintenance margin |
+| ---------------- | --------- | ------------- | --------- | --------- | ----------------------- | ------------ | ------------ | ------------------ |
+| **BTCUSDT-PERP** | 0.001 BTC | 1,000,000 BTC | 0.001     | 0.1       | 50% – 150% of reference | 1 USDT       | 100×         | 0.5%               |
+| **ETHUSDT-PERP** | 0.001 ETH | 1,000,000 ETH | 0.001     | 0.01      | 50% – 150% of reference | 1 USDT       | 100×         | 0.5%               |
+
+The **maintenance margin rate (MMR)** is the fraction of position notional you must keep to avoid liquidation. See [Margin & Leverage](/perpetual-trading/margin-and-leverage) and [Liquidation & Mark Price](/perpetual-trading/risk-and-liquidation/liquidation-and-mark-price) for how leverage and maintenance margin affect your positions.
+
+## Market-order slippage tolerance
+
+A market order opens immediately at the best available price, so the fill price can differ from the mark price shown at submission. To stay funded if it fills at a worse price, a market order reserves about **5% extra initial margin** on top of the normal requirement.
+
+## Worked Examples
+
+<Accordion title="Price not aligned to tick size">
+
+You place a limit order on **BTCUSDT-PERP** at **60,000.05**. The tick size is **0.1**, so the price must end at a multiple of 0.1 (e.g. `60,000.0` or `60,000.1`). You won't be able to place it — round your price to the tick size and try again.
+
+</Accordion>
+
+<Accordion title="Limit price outside the price band">
+
+With BTC trading around **60,000**, you place a limit buy at **20,000** — below **50%** of the reference price (30,000). The order falls outside the price band, so it's blocked. Place the order within the allowed range around the current price.
+
+</Accordion>
+
+<Accordion title="Amount below the minimum / not aligned to step size">
+
+You try to open a **0.0005 BTC** position on BTCUSDT-PERP. The minimum order size is **0.001** and the step size is **0.001**, so `0.0005` is both too small and not a valid increment. Use `0.001`, `0.002`, and so on.
+
+</Accordion>
+
+## Related Articles
+
+* [Margin & Leverage](/perpetual-trading/margin-and-leverage)
+* [Liquidation & Mark Price](/perpetual-trading/risk-and-liquidation/liquidation-and-mark-price)
+* [FAQ](/perpetual-trading/faq)

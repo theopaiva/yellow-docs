@@ -1,0 +1,89 @@
+---
+title: "Understanding Transfers on Yellow.pro"
+description: "Why some transfers are instant and others take time, how to check transfer status, and what to do if a transfer stays pending."
+---
+
+Transfers on Yellow.pro behave differently depending on which accounts are involved. Some transfers are instant, while others are blockchain-based and subject to network delays. This guide explains why transfers may take time and what to expect if a transfer stays pending.
+
+## Before You Start
+
+* Account Balance (`Yellow Wallet`) ↔ Trading Account (`Spot Account`) transfers are blockchain-based and not instant.
+* Trading Account (`Spot Account`) ↔ Perpetual Account transfers are internal and should reflect instantly.
+* During blockchain congestion, transfers may take longer than usual.
+* If a blockchain-based transfer stays "Pending" for an extended period, the transaction may still be processing on-chain.
+
+For details on transfer types, see [Understanding Your Balances](/account-and-balance/understanding-your-balances).
+
+## Why Transfers Take Time
+
+Blockchain-based transfers (Account Balance ↔ Trading Account) must wait for blockchain confirmations and are subject to network congestion. Internal transfers (Trading Account ↔ Perpetual Account) are instant because they happen entirely within the platform.
+
+**Expected timing:** Blockchain-based transfers usually complete within a few minutes under normal network conditions, but congestion can cause delays of 30 minutes or more.
+
+## Checking Transfer Status
+
+You can track your transfers in two ways:
+
+* **Transfer page** (`yellow.pro/assets/deposit/transfer`) — shows recent transfers and their current status (Pending or Completed).
+
+<Frame caption="Recent Transfers Records">
+  <img src="/images/UmFR5y0VJweo9rh87g66" alt="Recent Transfers Records" />
+</Frame>
+
+* **Transfer history** (`yellow.pro/assets/history`) — shows complete transfer history, displays the TxID once the blockchain transaction is submitted, and shows the final completion status.
+
+<Frame caption="Transfer History">
+  <img src="/images/3HIw9I8Wx3URTUxQsrhH" alt="Transfer History" />
+</Frame>
+
+For blockchain-based transfers, the TxID becomes visible once the transaction is submitted. You can use it to track progress on a blockchain explorer.
+
+## Understanding Transfer Statuses
+
+<table><thead><tr><th width="150.4296875">Status</th><th>Meaning</th></tr></thead><tbody><tr><td><strong>Pending</strong></td><td>Transfer is being processed on the blockchain. This is normal for Account Balance ↔ Trading Account transfers.</td></tr><tr><td><strong>Completed</strong></td><td>Transfer finished successfully. Funds are now in the destination account.</td></tr><tr><td><strong>Failed</strong></td><td>Transfer could not be completed. Funds remain in the source account.</td></tr></tbody></table>
+
+For blockchain-based transfers, "Pending" can last anywhere from a few minutes to several hours depending on network conditions.
+
+## Why Is My Transfer Still Pending?
+
+<Accordion title="Account Balance ↔ Trading Account (blockchain-based)">
+
+This is usually normal while the blockchain transaction is being processed. Common reasons for delays:
+
+* blockchain network congestion
+* delayed transaction submission to the network
+* temporary blockchain confirmation delays
+
+Check the Transfer page or History to confirm the transfer is still showing as "Pending." If you see a TxID, you can also check a blockchain explorer to verify the status.
+
+**If the transfer remains pending for more than 1 hour:**
+
+1. Verify which accounts are involved (confirm it's Account Balance ↔ Trading Account).
+2. Check the Transfer page to confirm status.
+3. If still pending, [contact support](/community-and-resources/contact-support) with your wallet address, the asset and amount, and a screenshot of the transfer status.
+
+</Accordion>
+
+<Accordion title="Trading Account ↔ Perpetual Account (internal)">
+
+These transfers should complete instantly. If the balance doesn't update immediately:
+
+1. Refresh the page.
+2. Disconnect and reconnect your wallet.
+3. Retry the transfer.
+4. Check whether the transfer status shows "Failed."
+
+If the issue persists, [contact support](/community-and-resources/contact-support) with your wallet address, the asset and amount, and a screenshot of the issue.
+
+</Accordion>
+
+## Important Information
+
+* Funds locked in open orders, active positions, or used as margin may not be available for transfer until those orders or positions are closed.
+* For Google Sign-in users, think of Account Balance ↔ Trading Account transfers like standard blockchain deposits — they're not instant and depend on network conditions.
+
+## Related Articles
+
+* [Understanding Your Balances](/account-and-balance/understanding-your-balances)
+* [How to Transfer Funds Between Accounts](/account-and-balance/transfer-funds-between-accounts)
+* [Why Funds May Not Be Transferable](/account-and-balance/why-funds-not-transferable)

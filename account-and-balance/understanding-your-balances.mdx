@@ -1,0 +1,111 @@
+---
+title: "Understanding Your Balances"
+description: "How Yellow.pro's balance areas work — Account Balance, Trading Account, and Perpetual Account — and how funds flow between them."
+---
+
+Yellow.pro uses different balance areas depending on how your account was created and what trading activity you're doing. Understanding these balances helps avoid confusion when depositing, transferring, and withdrawing funds.
+
+## Account Types Determine Your Balance Structure
+
+Your account type affects which balances you use:
+
+* **Google Sign-in users** use three balances: Account Balance (`Yellow Wallet`), Trading Account (`Spot Account`), and Perpetual Account.
+* **External wallet users** use only two balances: Trading Account (`Spot Account`) and Perpetual Account. They do not use Account Balance.
+
+## Account Balance (`Yellow Wallet`)
+
+**What it is:** For Google Sign-in users only. This is your smart contract wallet linked to your account. Deposits first arrive here before becoming available for trading.
+
+**What you can do with it:**
+
+* Receive incoming deposits
+* Hold funds before moving them to your Trading Account (`Spot Account`)
+* Process withdrawals (funds must be here before you can withdraw)
+
+<Warning>
+Funds in Account Balance (`Yellow Wallet`) cannot be used directly for trading. They must first be transferred to your Trading Account (`Spot Account`).
+</Warning>
+
+## Trading Account (`Spot Account`)
+
+**What it is:** The balance where trading takes place. For Google Sign-in users, funds arrive here only after transferring from Account Balance (`Yellow Wallet`). For external wallet users, deposits arrive directly here.
+
+<Frame caption="Trading (Spot) Account Balance">
+  <img src="/images/vieLkuTdFalevOdm6gVC" alt="Trading (Spot) Account Balance" />
+</Frame>
+
+**What you can do with it:**
+
+* Place trades on Spot markets
+* Transfer funds to the Perpetual Account for perpetual trading
+* Withdraw directly (external wallet users only)
+* Transfer back to Account Balance (`Yellow Wallet`) before withdrawal (Google Sign-in users only)
+
+## Perpetual Account
+
+**What it is:** A separate balance used only for perpetual futures trading. Funds must be transferred here manually before they can be used for perpetual positions.
+
+<Frame caption="Perpetual Account Balance">
+  <img src="/images/tBQnwECbyamq5VhLjjoq" alt="Perpetual Account Balance" />
+</Frame>
+
+**What you can do with it:**
+
+* Open and maintain perpetual trading positions
+* Hold margin for active positions
+
+<Warning>
+Funds in the Perpetual Account cannot be withdrawn directly. They must be transferred back to the Trading Account (`Spot Account`) first, then to Account Balance (`Yellow Wallet`) before withdrawal.
+</Warning>
+
+## How Funds Flow Through Your Balances
+
+<Tabs>
+<Tab title="Google Sign-in">
+**Deposits**
+
+`External wallet or exchange → Account Balance (Yellow Wallet) → Trading Account (Spot Account) → Perpetual Account`
+
+**Withdrawals**
+
+`Perpetual Account → Trading Account (Spot Account) → Account Balance (Yellow Wallet) → Your external wallet`
+</Tab>
+
+<Tab title="External Wallet">
+**Deposits**
+
+`External wallet → Trading Account (Spot Account) → Perpetual Account`
+
+**Withdrawals**
+
+`Perpetual Account → Trading Account (Spot Account) → External wallet`
+</Tab>
+</Tabs>
+
+## Moving Funds Between Balances
+
+How a transfer behaves depends on which balances are involved: **Account Balance ↔ Trading Account** transfers are blockchain-based and not instant, while **Trading Account ↔ Perpetual Account** transfers are internal and instant. For timing, statuses, and troubleshooting, see [Understanding Transfers on Yellow.pro](/account-and-balance/understanding-transfers); for step-by-step instructions, see [How to Transfer Funds Between Accounts](/account-and-balance/transfer-funds-between-accounts).
+
+## Quick Comparison: Google Sign-in vs External Wallet
+
+| Feature                                       | Google Sign-in Users                    | External Wallet Users            |
+| --------------------------------------------- | --------------------------------------- | -------------------------------- |
+| Account Balance (`Yellow Wallet`) used?       | Yes (required)                          | No                               |
+| Deposits arrive in                            | Account Balance (`Yellow Wallet`)       | Trading Account (`Spot Account`) |
+| Extra transfer needed before trading?         | Yes (Account Balance → Trading Account) | No                               |
+| Withdrawal process                            | Must transfer to Account Balance first  | Direct from Trading Account      |
+| Account Balance ↔ Trading Account transfers   | Blockchain-based, not instant           | Not applicable                   |
+| Trading Account ↔ Perpetual Account transfers | Instant, internal                       | Instant, internal                |
+| Can withdraw directly from Perpetual Account? | No                                      | No                               |
+
+## Important Things to Know
+
+* Funds locked in open orders or active positions may not be available for transfer — see [Why Funds May Not Be Transferable](/account-and-balance/why-funds-not-transferable).
+* Account Balance ↔ Trading Account transfers may carry a network fee (sometimes sponsored by Yellow) — you'll see this on the Transfer page.
+* Blockchain transactions cannot be reversed once completed.
+
+## Related Articles
+
+* [Understanding Transfers on Yellow.pro](/account-and-balance/understanding-transfers)
+* [How to Transfer Funds Between Accounts](/account-and-balance/transfer-funds-between-accounts)
+* [Why Funds May Not Be Transferable](/account-and-balance/why-funds-not-transferable)

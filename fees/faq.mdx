@@ -1,0 +1,104 @@
+---
+title: "FAQ"
+description: "Quick answers about trading fees, VIP tiers, $YELLOW, funding, and network fees."
+---
+
+## Trading Fees
+
+<Accordion title="What are the trading fees on Yellow.pro for Spot and Perpetuals?">
+
+Trading fees depend on your VIP tier and whether your order is maker or taker. Base tier is Spot 0.08% maker / 0.10% taker and Perp 0.01% maker / 0.04% taker. See [VIP Tiers & Fee Discounts](/fees/vip-tiers) for the complete schedule.
+
+</Accordion>
+
+<Accordion title="What is the difference between a maker fee and a taker fee?">
+
+Maker orders add liquidity and have lower fees; taker orders consume liquidity and have higher fees. Market orders are usually taker; limit orders can be either. See [Trading Fees (Maker & Taker)](/fees/trading-fees).
+
+</Accordion>
+
+<Accordion title="Why was a fee charged on my trade, and how is it calculated?">
+
+Fees are charged whenever an order is successfully filled: `Fee = Fill Value × Fee Rate` (Fill Value = Price × Size). Cancelled or unfilled orders generate no fees. See [Trading Fees (Maker & Taker)](/fees/trading-fees).
+
+</Accordion>
+
+<Accordion title="What currency are trading fees charged in?">
+
+It depends on the market. On **Spot**, the fee is taken in the asset you **receive** — the base asset when you buy, the quote asset when you sell. On **Perpetuals**, fees are charged in the **quote currency** (e.g. USDT). See [Trading Fees (Maker & Taker)](/fees/trading-fees).
+
+</Accordion>
+
+<Accordion title="How do I check and reduce my trading fees?">
+
+View fees in your trade history (`yellow.pro/spot/orders?tab=trades` or `/perps/orders?tab=trades`). To reduce them, increase your VIP tier through trading volume or by holding $YELLOW. See [VIP Tiers & Fee Discounts](/fees/vip-tiers).
+
+</Accordion>
+
+## VIP Tiers & $YELLOW
+
+<Accordion title="What is a VIP tier and how often does it update?">
+
+Your VIP tier determines your trading fees — higher tiers pay less. It's evaluated automatically and continuously as your trading activity or $YELLOW balance changes, and you're always placed in the highest tier you qualify for. See [VIP Tiers & Fee Discounts](/fees/vip-tiers).
+
+</Accordion>
+
+<Accordion title="How do I qualify for higher VIP tiers?">
+
+Meet any one requirement: 30-day Spot volume, 30-day Perpetual volume, or a 24-hour average $YELLOW balance in your Trading Account (`Spot Account`). VIP 1 needs 100K USDT Spot volume, 1M USDT Perp volume, or 10,000 $YELLOW. See [VIP Tiers & Fee Discounts](/fees/vip-tiers).
+
+</Accordion>
+
+<Accordion title="How do I use $YELLOW to get a fee discount?">
+
+Hold a 24-hour average of $YELLOW in your Trading Account (`Spot Account`) to qualify for higher VIP tiers. Only Trading Account balance counts — not Account Balance (`Yellow Wallet`) or external wallets. There's no separate discount for paying fees with $YELLOW. See [$YELLOW Token & Fee Discounts](/fees/yellow-token-fee-discount).
+
+</Accordion>
+
+<Accordion title="Where can I get $YELLOW tokens?">
+
+$YELLOW is currently available directly on Yellow.pro for trading and holding. Additional exchange listings may be added in the future. See [$YELLOW Token & Fee Discounts](/fees/yellow-token-fee-discount).
+
+</Accordion>
+
+## Funding Fees
+
+<Accordion title="What is a funding fee and when is it charged?">
+
+Funding fees are payments exchanged between long and short traders every 8 hours on Perpetual markets (positive rate: longs pay shorts; negative: shorts pay longs). They only apply if you hold an open position at the funding timestamp. See [Funding Fees Explained](/fees/funding-fees-explained).
+
+</Accordion>
+
+<Accordion title="Are funding fees different from trading fees?">
+
+Yes. Trading fees are charged when orders fill; funding fees are exchanged every 8 hours between traders for open Perpetual positions and are not collected by Yellow.pro. See [Funding Fees Explained](/fees/funding-fees-explained).
+
+</Accordion>
+
+## Network Fees
+
+<Accordion title="What are withdrawal network fees and how much are they?">
+
+They're Ethereum blockchain transaction fees required to process withdrawals on-chain — not Yellow.pro fees. They vary with network congestion, and Yellow.pro shows the estimate before you confirm. See [Withdrawal Network Fees Explained](/fees/withdrawal-network-fees).
+
+</Accordion>
+
+<Accordion title="Why did my received amount differ from my withdrawal amount?">
+
+The network fee is deducted from your withdrawal — e.g. a 100 USDT withdrawal with a 1 USDT fee results in 99 USDT received. See [Withdrawal Network Fees Explained](/fees/withdrawal-network-fees).
+
+</Accordion>
+
+## Fee Split
+
+<Accordion title="How is my trading fee used, and does the split increase my fees?">
+
+Your fee is divided internally — 85% toward $YELLOW buybacks and 15% toward platform operations. The split does **not** increase your fee — the amount you pay is unchanged. See [Fee Split Explained](/fees/fee-split).
+
+</Accordion>
+
+<Accordion title="Are there any other fees besides trading and funding fees?">
+
+Besides trading fees, Spot has no additional fees. Perpetual traders also pay funding fees (every 8 hours). Network fees apply to deposits and withdrawals.
+
+</Accordion>

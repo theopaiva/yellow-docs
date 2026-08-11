@@ -1,0 +1,47 @@
+---
+title: "Cross-Margin Risk & ADL"
+description: "How cross margin aggregates risk across all your positions, and how auto-deleveraging (ADL) settles liquidations against opposing traders."
+---
+
+## How Cross Margin Aggregates Risk
+
+Yellow.pro uses **cross margin**, so all positions share one pool of collateral — your total account balance. Liquidation is assessed on your **entire account**, not a single position:
+
+`Account Equity = Total Balance + Total Unrealized PnL`
+
+`Margin Ratio = Total Maintenance Margin Required / Account Equity`
+
+Liquidation occurs when the total-account margin ratio reaches 100%.
+
+> **Example:** a long ETH down −300 USDT and a short BTC up +100 USDT net to −200 USDT. If the ETH loss grows, the combined margin ratio can trigger liquidation — even though the BTC short is profitable.
+
+### The cascade effect
+
+In extreme conditions, one position's losses can threaten the whole account: the market moves sharply against position A → account equity drops → the account margin ratio rises → if it hits 100%, **all positions may be liquidated, including profitable ones.** This is the main risk of cross margin.
+
+**Protective measures:** use a stop-loss on every position, size positions so no single trade dominates, keep free margin well above zero, and monitor your margin ratio in volatile markets.
+
+## Auto-Deleveraging (ADL)
+
+When an account is liquidated, its positions are matched against **real opposing positions** held by other traders. This matching mechanism is **Auto-Deleveraging (ADL)** — a liquidation and an ADL are two sides of the same trade.
+
+### How ADL works
+
+1. An account is liquidated and its remaining position is taken over for settlement.
+2. The ADL engine ranks traders on the **opposite side** of that market by a priority score combining **profit and position size** (higher unrealized profit relative to size = higher priority).
+3. Top-ranked counterparties have part of their position closed to absorb the liquidated position. The match settles at the liquidated account's **liquidation price**, falling back to its **bankruptcy price** if the liquidation price can't be applied.
+4. Affected traders are notified and can re-enter the market immediately.
+
+### Managing ADL risk
+
+Your ADL priority rises with **high unrealized profit and high leverage** on a position. If you're holding a large, highly profitable, highly leveraged position, part of it may be used to close out a liquidated trader on the opposite side. To lower the chance of being deleveraged, take some profit (partially close) or reduce leverage.
+
+<Info>
+Being ADL'd isn't a fee or a penalty — it's the natural other side of a liquidation. Part of your **winning** position is closed early to absorb a liquidated trader, and you bank the profit on that portion at the settlement price. Because that price comes from the liquidated account rather than the current mark, the amount can differ slightly from closing at market yourself. The rest of your position stays open.
+</Info>
+
+## Related Articles
+
+* [Liquidation & Mark Price](/perpetual-trading/risk-and-liquidation/liquidation-and-mark-price)
+* [Margin Warnings & Risk Management](/perpetual-trading/risk-and-liquidation/margin-warnings-and-risk-management)
+* [Margin & Leverage](/perpetual-trading/margin-and-leverage)

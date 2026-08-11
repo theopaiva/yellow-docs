@@ -1,0 +1,59 @@
+---
+title: "Supported Networks, Assets & Limits"
+description: "Supported network and assets, blockchain confirmations, minimum withdrawal amounts, network fees, and irreversibility rules for deposits and withdrawals."
+---
+
+This page covers everything that applies to both deposits and withdrawals: the supported network, assets, confirmation requirements, minimum withdrawal amounts, network fees, and the rules around irreversibility.
+
+## Supported Network
+
+**Ethereum is the only network currently supported** for deposits and withdrawals on Yellow.pro. All transactions are processed through the Ethereum blockchain.
+
+<Warning>
+Funds sent on any other network will not be credited and **cannot be recovered** by the platform. Always confirm the selected network matches your sending or receiving wallet before confirming.
+</Warning>
+
+## Supported Assets
+
+All assets are ERC-20 tokens on **Ethereum mainnet**. Always verify the token's contract address before depositing — depositing a different token to a Yellow.pro address may be unrecoverable.
+
+| Asset  | Name                 | Contract address (Ethereum)                  | Minimum Withdrawal |
+| ------ | -------------------- | -------------------------------------------- | ------------------ |
+| ETH    | Ether (native token) | Native — no contract address                 | 0.005              |
+| WBTC   | Wrapped Bitcoin      | `0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599` | 0.00015            |
+| USDT   | Tether               | `0xdAC17F958D2ee523a2206206994597C13D831ec7` | 5                  |
+| YELLOW | Platform token       | `0x236eB848C95b231299B4AA9f56c73D6893462720` | 1,000              |
+| WSOL   | Wrapped SOL          | `0xD31a59c85aE9D8edEFeC411D448f90841571b89c` | 0.1                |
+| BNB    | BNB                  | `0xB8c77482e45F1F44dE1745F52C74426C631bDD52` | 0.015              |
+
+When depositing, select the asset from the deposit form — the network is automatically set to Ethereum. Always confirm the asset and network before sending funds.
+
+<Info>
+You can deposit and withdraw all assets above, but not every asset has a spot trading pair yet. **WSOL** and **BNB** are currently deposit-and-withdraw only. See [Market Rules & Limits](/spot-trading/market-rules) for the markets available to trade.
+</Info>
+
+## Blockchain Confirmations
+
+Deposits require **15 blockchain confirmations** before being credited to your account. This helps ensure transaction security and finality on the Ethereum network. During periods of high network congestion, confirmations may take longer than usual.
+
+## Minimum Withdrawal Amounts
+
+Withdrawals below the minimum amount cannot be initiated. If your available balance is below the required minimum for an asset (see the table above), the withdrawal option remains unavailable until you have more funds. There is **no maximum** withdrawal limit.
+
+## Network Fees
+
+Withdrawals incur an Ethereum network fee — a blockchain transaction cost, not a Yellow.pro fee — that is deducted from your withdrawal amount and shown on the Withdraw page before you confirm. For why it applies, why it changes, and how it's deducted, see [Withdrawal Network Fees Explained](/fees/withdrawal-network-fees).
+
+## Withdrawals Are Final
+
+Once a withdrawal is submitted on-chain, it **cannot be reversed, cancelled, or modified.** Funds sent to the wrong address, or to an unsupported blockchain, cannot be recovered by Yellow.pro. Always verify the recipient address and that the receiving platform supports the Ethereum network before confirming.
+
+## Tracking Deposits & Withdrawals
+
+Track transaction status and details in your history at `yellow.pro/assets/history` — including the TxID, asset and amount, network fee deducted, final received amount, and status. For deposits to a Google Sign-in Account Balance, you can also verify the on-chain transaction on a blockchain explorer such as `etherscan.io` using your deposit address.
+
+## Related Articles
+
+* [How to Deposit](/deposits-and-withdrawals/how-to-deposit)
+* [How to Withdraw](/deposits-and-withdrawals/how-to-withdraw)
+* [Deposit & Withdrawal Troubleshooting](/deposits-and-withdrawals/troubleshooting)

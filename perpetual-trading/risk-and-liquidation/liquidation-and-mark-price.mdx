@@ -1,0 +1,120 @@
+---
+title: "Liquidation & Mark Price"
+description: "What triggers liquidation on Yellow.pro, the liquidation process and price, and why the mark price (not the last traded price) determines it."
+---
+
+## What is Liquidation?
+
+**Liquidation** is the automatic closure of one or more open positions when your account no longer has sufficient margin to support them. It prevents your balance from going negative. You lose the margin allocated to the affected position(s), but never owe more than you deposited.
+
+## When Does Liquidation Happen?
+
+Liquidation triggers when your **Margin Ratio reaches 100%** — your account equity has dropped to the maintenance margin level:
+
+`Margin Ratio = Maintenance Margin Required / Account Equity`
+
+In **cross margin mode** (used on Yellow.pro), this is calculated across **all** your open positions together, not per individual position.
+
+The **Maintenance Margin Rate (MMR)** is the fraction of position notional you must keep as a buffer. On current markets (BTC and ETH perpetuals) the MMR is a flat **0.5%**:
+
+`Maintenance Margin Required = Position Notional × 0.5%`
+
+<Info>
+To protect you from brief price wicks, liquidation is evaluated on the **worst-case mark price** seen in each scan window — the lowest price for longs and the highest for shorts — not on a single instantaneous tick.
+</Info>
+
+## The Liquidation Process
+
+1. **Detection** — the system continuously monitors your account's margin ratio.
+2. **Trigger** — when the ratio hits 100%, the liquidation engine takes over your account.
+3. **Netting** — if you hold both a long and a short in the same market, they are closed against each other first to reduce exposure.
+4. **Takeover & settlement** — your remaining position(s) are taken over and matched against opposing traders through [auto-deleveraging (ADL)](/perpetual-trading/risk-and-liquidation/cross-margin-risk-and-adl), settled at your **Liquidation Price** (or the **Bankruptcy Price** as a fallback — both explained below).
+5. **Record** — the liquidation is logged in your Trade History.
+
+![A liquidation entry in trade history](/images/Yrg3U3vhETSuKzIpOCb1)
+
+When a position breaches its maintenance margin, Yellow.pro doesn't immediately seize the whole thing. It first attempts a **graduated reduction** — closing your position in steps — to preserve as much of your capital as possible. Full takeover only happens if these steps aren't enough.
+
+Here's how the smart-liquidation engine works:
+
+<Steps>
+<Step title="Partial close at bankruptcy price">
+Instead of seizing the entire position at once, the engine places a **partial close order at the bankruptcy price**, reducing your position size in steps.
+</Step>
+
+<Step title="Tier-aware step sizing">
+The reduction amount is sized according to the position's **risk tier**, so larger positions reduce in proportionally appropriate increments.
+</Step>
+
+<Step title="Re-check after each step">
+After each partial close, the engine re-evaluates whether full liquidation is still necessary. **If your margin is restored, the position survives** at a smaller size.
+</Step>
+
+<Step title="Minimum-lot protection">
+Reduction steps respect the market's minimum order size. If the default step is too small to trade, the engine automatically escalates to a tradeable size.
+</Step>
+</Steps>
+
+<Info>
+Tiered reduction is designed to give your position the best chance of surviving a margin breach at a smaller size. It happens automatically — there's nothing to configure — but the best protection is still to manage margin and leverage before the maintenance level is reached.
+</Info>
+
+## Liquidation Price
+
+Your **Liquidation Price** is the estimated Mark Price at which your account would be liquidated — the price at which your equity falls to the maintenance margin level. It's shown in the positions panel. In cross margin it is **not fixed**: it moves with your unrealized PnL, positions you open or close, and deposits or withdrawals.
+
+For a single position with balance `B`, the simplified formula is:
+
+```
+Long:  Liquidation Price = (Amount × Entry − B) / (Amount × (1 − MMR))
+Short: Liquidation Price = (Amount × Entry + B) / (Amount × (1 + MMR))
+```
+
+In practice the engine also folds in the unrealized PnL and maintenance margin of your *other* open positions, since cross margin shares one collateral pool. You don't need to compute this by hand — the platform displays your live liquidation price — but the formula shows what moves it.
+
+<Accordion title="Worked example">
+
+You open a long of **0.1 BTC at 50,000**, with a balance of **1,000 USDT** and no other positions. At MMR = 0.5%:
+
+`(0.1 × 50,000 − 1,000) / (0.1 × (1 − 0.005)) = 4,000 / 0.0995 ≈ 40,201`
+
+Your liquidation price is about **40,201**. Adding margin lowers it; opening more positions or taking losses elsewhere raises it.
+
+</Accordion>
+
+## Bankruptcy Price
+
+The **Bankruptcy Price** is the Mark Price at which your account equity reaches **zero**. It sits *beyond* your liquidation price (lower for a long, higher for a short) — liquidation is triggered first, leaving a thin buffer before bankruptcy.
+
+```
+Long:  Bankruptcy Price = Entry − (Account Equity / Position Size)
+Short: Bankruptcy Price = Entry + (Account Equity / Position Size)
+```
+
+A liquidation normally settles at your liquidation price. The bankruptcy price is the **fallback** used when the liquidation price can't be applied — it's the worst-case floor for what a position can settle at. Any value between your liquidation price and bankruptcy price is consumed by the liquidation; whatever remains (often little or nothing) stays in your balance.
+
+## Mark Price vs Last Traded Price
+
+Yellow.pro shows two prices, and the difference matters:
+
+* **Last Traded Price** — the price of the most recent trade. It can be briefly distorted by large orders or thin liquidity.
+* **Mark Price** — a calculated fair-value price derived from external reference data that smooths out temporary anomalies.
+
+**Liquidation and unrealized PnL are based on the Mark Price**, not the last traded price.
+
+<Info>
+This protects you both ways: a temporary spike in the last traded price that doesn't move the Mark Price will **not** liquidate you — but a drop in the Mark Price that isn't visible on the chart **can**. Always watch the Mark Price in your positions panel.
+</Info>
+
+## How to Avoid Liquidation
+
+* Set **stop-loss orders** to exit before the liquidation threshold (not guaranteed).
+* **Add margin** (deposit funds) to increase your buffer.
+* **Reduce position size or leverage** to lower the maintenance margin required.
+* **Monitor your margin ratio** and act early. Make sure [margin warning emails](/perpetual-trading/risk-and-liquidation/margin-warnings-and-risk-management) are enabled.
+
+## Related Articles
+
+* [Cross-Margin Risk & ADL](/perpetual-trading/risk-and-liquidation/cross-margin-risk-and-adl)
+* [Margin Warnings & Risk Management](/perpetual-trading/risk-and-liquidation/margin-warnings-and-risk-management)
+* [Margin & Leverage](/perpetual-trading/margin-and-leverage)

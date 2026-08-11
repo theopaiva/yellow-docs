@@ -1,0 +1,64 @@
+---
+title: "Overview"
+description: "Overview of the Yellow.pro REST and WebSocket APIs, base URLs, and authentication."
+---
+
+The Yellow.pro platform provides REST and WebSocket APIs for authentication, trading, account management, and market data. There are two base URLs:
+
+* **Authentication API** — wallet-based authentication, JWT tokens, and session management
+* **Trading API** — trading, positions, transfers, market data, and the WebSocket stream
+
+New here? Start with [**Getting Started with API**](/api-and-programmatic-access/getting-started-with-api) to authenticate and obtain your API keys.
+
+## Base URLs
+
+| API                          | Base URL                       |
+| ---------------------------- | ------------------------------ |
+| Authentication               | `https://auth.api.yellow.pro`  |
+| Trading (REST + market data) | `https://trade.api.yellow.pro` |
+| WebSocket                    | `wss://trade.api.yellow.pro`   |
+
+<Info>
+All examples in these docs use the production hosts above. Market data endpoints are served from the Trading API base URL and require no authentication.
+</Info>
+
+## Contents
+
+<CardGroup cols={2}>
+  <Card title="Getting Started" href="/api-and-programmatic-access/getting-started-with-api">
+    Authentication flow, JWT and API key (HMAC) auth
+  </Card>
+  <Card title="API Key Management" href="/api-and-programmatic-access/api-key-management">
+    Create, list, and revoke API keys; scopes and IP allow-lists
+  </Card>
+  <Card title="Signing Requests with API Keys" href="/api-and-programmatic-access/signing-requests-with-api-keys">
+    HMAC-SHA256 signature algorithm with Node.js and Python examples
+  </Card>
+  <Card title="Authentication Service API" href="/api-and-programmatic-access/authentication-service-api">
+    Challenge, verify, refresh, login, logout, /auth/me
+  </Card>
+  <Card title="Trading API Service" href="/api-and-programmatic-access/trading-api-service">
+    Health, auth testing, and exchange market data
+  </Card>
+  <Card title="Market Data API" href="/api-and-programmatic-access/market-data-api">
+    Prices, momentum, std, VWMA (no auth required)
+  </Card>
+  <Card title="Spot Trading" href="/api-and-programmatic-access/spot-trading-api">
+    Spot accounts, orders, trades, deposits, withdrawals
+  </Card>
+  <Card title="Perpetuals Trading" href="/api-and-programmatic-access/perpetuals-trading-api">
+    Positions, leverage, margin, perp orders, funding
+  </Card>
+  <Card title="Account Transfers" href="/api-and-programmatic-access/account-transfers-api">
+    Internal transfers and send history
+  </Card>
+  <Card title="WebSocket API" href="/api-and-programmatic-access/websocket-api">
+    Real-time streams and liquidation warnings
+  </Card>
+  <Card title="Error Handling" href="/api-and-programmatic-access/error-handling-api">
+    Error response formats, codes, HTTP statuses
+  </Card>
+  <Card title="Reference" href="/api-and-programmatic-access/reference">
+    Rate limits, data types, implementation notes
+  </Card>
+</CardGroup>

@@ -1,0 +1,174 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Yellow Guide",
+  "colors": {
+    "primary": "#E5B80B",
+    "light": "#F5D547",
+    "dark": "#B8940A"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guide",
+        "groups": [
+          {
+            "group": "Welcome to Yellow.pro",
+            "pages": [
+              "index"
+            ]
+          },
+          {
+            "group": "Getting Started",
+            "pages": [
+              "getting-started/overview",
+              "getting-started/what-is-yellow",
+              "getting-started/users-journey",
+              "getting-started/wallet-vs-gmail",
+              "getting-started/connect-your-wallet",
+              "getting-started/glossary",
+              "getting-started/faq"
+            ]
+          },
+          {
+            "group": "Account & Balance",
+            "pages": [
+              "account-and-balance/overview",
+              "account-and-balance/understanding-your-balances",
+              "account-and-balance/understanding-transfers",
+              "account-and-balance/transfer-funds-between-accounts",
+              "account-and-balance/why-funds-not-transferable",
+              "account-and-balance/faq"
+            ]
+          },
+          {
+            "group": "Portfolio",
+            "pages": [
+              "portfolio/overview",
+              "portfolio/portfolio-overview",
+              "portfolio/position-history"
+            ]
+          },
+          {
+            "group": "Deposits & Withdrawals",
+            "pages": [
+              "deposits-and-withdrawals/overview",
+              "deposits-and-withdrawals/how-to-deposit",
+              "deposits-and-withdrawals/how-to-withdraw",
+              "deposits-and-withdrawals/supported-networks-assets-limits",
+              "deposits-and-withdrawals/troubleshooting",
+              "deposits-and-withdrawals/faq"
+            ]
+          },
+          {
+            "group": "Spot Trading",
+            "pages": [
+              "spot-trading/overview",
+              "spot-trading/what-is-spot-trading",
+              "spot-trading/how-to-place-a-spot-trade",
+              "spot-trading/order-types",
+              "spot-trading/managing-orders",
+              "spot-trading/market-rules",
+              "spot-trading/faq"
+            ]
+          },
+          {
+            "group": "Perpetual Trading",
+            "pages": [
+              "perpetual-trading/overview",
+              "perpetual-trading/what-is-perpetual-trading",
+              "perpetual-trading/long-short-hedge-mode",
+              "perpetual-trading/margin-and-leverage",
+              "perpetual-trading/pnl",
+              {
+                "group": "Risk & Liquidation",
+                "pages": [
+                  "perpetual-trading/risk-and-liquidation/overview",
+                  "perpetual-trading/risk-and-liquidation/liquidation-and-mark-price",
+                  "perpetual-trading/risk-and-liquidation/cross-margin-risk-and-adl",
+                  "perpetual-trading/risk-and-liquidation/margin-warnings-and-risk-management"
+                ]
+              },
+              {
+                "group": "Position Management",
+                "pages": [
+                  "perpetual-trading/position-management/overview",
+                  "perpetual-trading/position-management/adjusting-margin-and-leverage",
+                  "perpetual-trading/position-management/closing-a-position"
+                ]
+              },
+              "perpetual-trading/contract-specifications",
+              "perpetual-trading/faq"
+            ]
+          },
+          {
+            "group": "Fees",
+            "pages": [
+              "fees/overview",
+              "fees/trading-fees",
+              "fees/vip-tiers",
+              "fees/funding-fees-explained",
+              "fees/withdrawal-network-fees",
+              "fees/yellow-token-fee-discount",
+              "fees/fee-split",
+              "fees/faq"
+            ]
+          },
+          {
+            "group": "Competitions",
+            "pages": [
+              "competitions/everything-about-competitions",
+              "competitions/campaign-hub",
+              "competitions/yellow-perps-race-edition-ii"
+            ]
+          },
+          {
+            "group": "Community & Resources",
+            "pages": [
+              "community-and-resources/overview",
+              "community-and-resources/community-channels",
+              "community-and-resources/contact-support"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API & Programmatic Access",
+            "pages": [
+              "api-and-programmatic-access/overview",
+              "api-and-programmatic-access/getting-started-with-api",
+              "api-and-programmatic-access/authentication-service-api",
+              "api-and-programmatic-access/api-key-management",
+              "api-and-programmatic-access/signing-requests-with-api-keys",
+              "api-and-programmatic-access/trading-api-service",
+              "api-and-programmatic-access/market-data-api",
+              "api-and-programmatic-access/spot-trading-api",
+              "api-and-programmatic-access/account-transfers-api",
+              "api-and-programmatic-access/perpetuals-trading-api",
+              "api-and-programmatic-access/websocket-api",
+              "api-and-programmatic-access/error-handling-api",
+              "api-and-programmatic-access/reference"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "Launch App",
+      "href": "https://yellow.pro"
+    }
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/yellow",
+      "website": "https://yellow.pro"
+    }
+  }
+}

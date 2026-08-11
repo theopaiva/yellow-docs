@@ -1,0 +1,145 @@
+---
+title: "External Wallet vs Google Account"
+description: "How the two ways to access Yellow.pro — external wallet vs Google sign-in — differ in balance structure and deposit, transfer, and withdrawal flow."
+---
+
+Yellow.pro supports two ways to access the platform:
+
+1. Connecting an external wallet
+2. Signing in using Google
+
+Both methods let you trade on the platform, but the balance structure and transfer flow work differently. This guide explains the main differences and gives the complete deposit, transfer, and withdrawal flow for each account type.
+
+<Tabs>
+<Tab title="External Wallet">
+You can connect supported wallets such as MetaMask, Rabby, Phantom, or WalletConnect directly to Yellow.pro. Deposits and withdrawals happen directly through the connected wallet. **External wallet users do NOT use Account Balance.**
+
+**Deposit flow**
+
+`External Wallet → Trading Account → Perpetual Account`
+
+Deposits go directly into the Trading Account. If you want to use funds for Perpetual trading, transfer them internally to the Perpetual Account.
+
+1. Initiate a deposit from Yellow.pro.
+2. Approve the spending limit in case of ERC20 transaction (like USDT)
+3. Approve the deposit transaction in your connected wallet.
+4. Wait for on-chain execution.
+5. Funds appear in your Trading Account.
+6. Transfer to the Perpetual Account if needed for perpetual trading.
+
+**Withdrawal flow**
+
+`Perpetual Account → Trading Account → External Wallet` &#x20;
+
+If funds are currently inside the Perpetual Account, they must first be transferred back to the Trading Account before withdrawal.
+
+1. Go to the Withdrawal page.
+2. Select the asset and amount.
+3. Funds are sent directly to your connected wallet.
+4. No recipient address needed — your wallet is already connected.
+
+**Transfer flow**
+
+`Trading Account ↔ Perpetual Account`
+
+Transfers between the Trading Account and Perpetual Account are internal platform transfers and normally reflect instantly.&#x20;
+
+<Frame caption="Spot Account To Perpetual Account Transfer">
+  <img src="/images/NirtxyTtGFurnMrT7uiL" alt="Spot Account To Perpetual Account Transfer" />
+</Frame>
+</Tab>
+
+<Tab title="Google Sign-in">
+If you sign in using Google, Yellow.pro automatically creates a Yellow Wallet linked to your account. Deposits first arrive in your Account Balance (your Yellow Wallet) before they can be used for trading.
+
+**Deposit flow**
+
+`Account Balance (Yellow Wallet) → Trading Account → Perpetual Account`
+
+After depositing, funds must first be transferred from Account Balance to the Trading Account before trading is possible.
+
+1. Initiate a deposit to your Account Balance using the shown on the interface address or by QR code.
+2. Wait for on-chain execution.
+3. Funds arrive in your Account Balance (Yellow Wallet).
+4. Transfer funds from Account Balance to the Trading Account.
+5. Wait for on-chain execution.
+6. Once in the Trading Account, you can trade or transfer to the Perpetual Account.
+
+<Frame caption="Account Balance to Trading Account Transfer">
+  <img src="/images/n3dre1O3vyzXAdR6vxhA" alt="Account Balance to Trading Account Transfer" />
+</Frame>
+
+**Withdrawal flow**
+
+`Perpetual Account → Trading Account → Account Balance (Yellow Wallet) → External Wallet`
+
+Withdrawals can only be processed through Account Balance. You must manually enter a recipient wallet address.
+
+1. If funds are in the Perpetual Account, transfer them to the Trading Account first.
+2. Transfer funds from the Trading Account to Account Balance.
+3. Go to the Withdrawal page.
+4. Enter the recipient wallet address (can be any external wallet).
+5. Select the asset and amount.
+6. Confirm the withdrawal.&#x20;
+
+**Transfer flow**
+
+<Frame caption="Perp Account -> Spot (Trading) Account To Account Balance Transfer">
+  <img src="/images/S6hKbZx82LospyUzIi42" alt="Perp Account -> Spot (Trading) Account To Account Balance Transfer" />
+</Frame>
+
+`Account Balance ↔ Trading Account` and `Trading Account ↔ Perpetual Account`
+
+* Transfers between Account Balance and the Trading Account are processed on-chain and may take additional time depending on blockchain conditions.
+* Transfers between the Trading Account and Perpetual Account are internal and normally reflect instantly. <br/>
+
+<Info>
+Your Account Balance (Yellow Wallet) is also accessible on Yellow.com. Once funds reach your Account Balance, you have full control through either Yellow.pro or Yellow.com.
+</Info>
+</Tab>
+</Tabs>
+
+## Main Differences
+
+| Comparison                                  | External Wallet Users                        | Google Sign-in Users                                   |
+| ------------------------------------------- | -------------------------------------------- | ------------------------------------------------------ |
+| Wallet setup                                | User connects their own wallet               | Yellow Wallet is created automatically                 |
+| Deposit destination                         | Trading Account                              | Account Balance (Yellow Wallet)                        |
+| Trading requirement                         | Funds can usually be traded immediately      | Funds must first be transferred to the Trading Account |
+| Spot ↔ Perpetual transfers                  | Internal and normally instant                | Internal and normally instant                          |
+| Withdrawal source                           | Trading Account (direct to connected wallet) | Account Balance (Yellow Wallet)                        |
+| Account Balance usage                       | Not used                                     | Required for deposits and withdrawals                  |
+| Account Balance ↔ Trading Account transfers | Not applicable                               | Processed on-chain                                     |
+| Recipient address on withdrawal             | Connected wallet used automatically          | User must enter recipient address manually             |
+
+## Important Things to Know
+
+* External wallet users interact directly through their connected wallet. They do not use Account Balance.
+* Google Sign-in users have an additional Account Balance layer (Yellow Wallet) for deposits and withdrawals.
+* Spot ↔ Perpetual transfers are internal and normally instant for both account types.
+* Account Balance ↔ Trading Account transfers are processed on-chain and may take time.
+* Funds locked in active orders or positions are not transferable.
+* Blockchain transactions cannot be reversed once completed.
+
+<Warning>
+For Google Sign-in users, withdrawals can be sent to any external wallet address on a supported blockchain. There are two separate things to keep in mind:
+
+* **Wrong address or unsupported blockchain — possible loss of funds.** If assets are withdrawn to an incorrect address, or to a blockchain Yellow.pro doesn't support, the funds may be permanently unrecoverable. Always double-check the destination address and network before confirming a withdrawal.
+* **Account-abstraction detection — a display limitation, not a loss.** Your Yellow Wallet is a smart (account-abstraction) wallet. External apps or wallets that don't support account abstraction may not automatically detect its balance, so your funds can appear "missing" in those apps even though they are safe. Contact the destination app support for resolution.
+</Warning>
+
+## Which Option Should You Choose?
+
+* **External wallet connection** is generally better for users already familiar with crypto wallets and direct wallet interaction. It's more straightforward since there's no Account Balance layer.
+* **Google Sign-in** is designed for users who want a simpler onboarding experience without manually connecting a wallet first. Your Yellow Wallet is created automatically and is also accessible on Yellow.com.
+
+Both methods provide access to the same trading platform and features. Choose whichever feels most comfortable for your workflow.
+
+## Related Articles
+
+* [What is Yellow.pro?](/getting-started/what-is-yellow)
+* [Users Journey on Yellow.pro](/getting-started/users-journey)
+* [Understanding Your Balances](/account-and-balance/understanding-your-balances)
+* [How to Transfer Funds Between Accounts](/account-and-balance/transfer-funds-between-accounts)
+* [How to Deposit](/deposits-and-withdrawals/how-to-deposit)
+* [How to Withdraw](/deposits-and-withdrawals/how-to-withdraw)

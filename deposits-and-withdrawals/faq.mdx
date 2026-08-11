@@ -1,0 +1,72 @@
+---
+title: "FAQ"
+description: "Quick answers to common deposit and withdrawal questions on Yellow.pro."
+---
+
+<Info>
+Having a problem with a deposit or withdrawal? See [Deposit & Withdrawal Troubleshooting](/deposits-and-withdrawals/troubleshooting) for step-by-step fixes.
+</Info>
+
+## Deposits
+
+<Accordion title="What assets and networks does Yellow.pro support for deposits?">
+
+Deposits are supported on the **Ethereum network only**. Supported assets: ETH, WBTC, USDT, and YELLOW. See [Supported Networks, Assets & Limits](/deposits-and-withdrawals/supported-networks-assets-limits) for confirmations and tracking.
+
+</Accordion>
+
+<Accordion title="Why do Google Sign-in users have a different deposit flow than external wallet users?">
+
+Google Sign-in users operate through a Yellow Wallet, so deposits first arrive in Account Balance (`Yellow Wallet`) before being moved to the Trading Account (`Spot Account`). External wallet users skip this — deposits go directly to the Trading Account. See [How to Deposit](/deposits-and-withdrawals/how-to-deposit).
+
+</Accordion>
+
+<Accordion title="Can I deposit directly into my Perpetual Account?">
+
+No. Deposits go first to Account Balance (Google) or the Trading Account (external wallet). Perpetual trading requires a separate, instant transfer from Trading Account → Perpetual Account.
+
+</Accordion>
+
+<Accordion title="What's the difference between Approval and Deposit transactions?">
+
+For ERC-20 tokens, **Approval** grants Yellow.pro permission to access your token (no funds move), while **Deposit** actually transfers the funds. Both are required to complete the deposit. Native ETH deposits only need the Deposit step. See [How to Deposit](/deposits-and-withdrawals/how-to-deposit).
+
+</Accordion>
+
+<Accordion title="How long does a deposit take?">
+
+Usually minutes, but up to 1 hour during congestion. Deposits require 15 blockchain confirmations before being credited. See [Deposit & Withdrawal Troubleshooting](/deposits-and-withdrawals/troubleshooting).
+
+</Accordion>
+
+## Withdrawals
+
+<Accordion title="Why can't I withdraw directly from my Trading Account?">
+
+It depends on your account type. External wallet users withdraw directly from the Trading Account (`Spot Account`); Google account users must first move funds to Account Balance (`Yellow Wallet`). See [How to Withdraw](/deposits-and-withdrawals/how-to-withdraw).
+
+</Accordion>
+
+<Accordion title="How do I move funds from Perpetual → Spot → Account Balance before withdrawing?">
+
+For Google users: (1) transfer Perpetual → Spot (instant), (2) transfer Spot → Account Balance (on-chain, may take time), (3) withdraw from Account Balance. See [How to Withdraw](/deposits-and-withdrawals/how-to-withdraw).
+
+</Accordion>
+
+<Accordion title="What is the minimum withdrawal amount?">
+
+Each asset has its own minimum (e.g. USDT 5, ETH 0.005). There's no maximum. See the table in [Supported Networks, Assets & Limits](/deposits-and-withdrawals/supported-networks-assets-limits).
+
+</Accordion>
+
+<Accordion title="Are there withdrawal fees?">
+
+Network fees are charged by the blockchain (not Yellow.pro) and deducted from your withdrawal amount. The estimate is shown before you confirm. See [Supported Networks, Assets & Limits](/deposits-and-withdrawals/supported-networks-assets-limits).
+
+</Accordion>
+
+<Accordion title="Why does a Google withdrawal depend on smart wallet detection?">
+
+Your Account Balance (`Yellow Wallet`) uses smart wallet abstraction, and some platforms don't automatically detect smart wallet balances. Verify the receiving platform supports Ethereum smart contracts before withdrawing. See [How to Withdraw](/deposits-and-withdrawals/how-to-withdraw).
+
+</Accordion>
