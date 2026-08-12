@@ -1,0 +1,78 @@
+---
+title: "Tools"
+icon: "toolbox"
+description: "The full tool surface of the Yellow.pro MCP server — market data, account state, and opt-in trading — plus order types and pagination."
+---
+
+Tools are grouped into three modules. Market tools need no credentials; account and trading tools do. Trading is opt-in (see [Configuration](/mcp/configuration)).
+
+## Market
+
+Available without credentials:
+
+`get_health`, `get_markets`, `get_ticker`, `get_orderbook`, `get_klines`, `get_funding_rate`, `get_funding_rate_history`, `get_networks`, `get_transfer_assets`
+
+## Account
+
+Require API credentials:
+
+`get_balance`, `get_open_orders`, `get_order_history`, `get_my_trades`, `get_positions`, `get_position_history`, `get_position_history_detail`, `get_spot_accounts`, `get_spot_account`, `get_perpetual_accounts`, `get_fee_schedule`, `get_fee_tier`, `get_market_fee_rate`, `get_transaction_history`, `get_funding_payments`
+
+## Trading (opt-in)
+
+Only registered when `YELLOW_PRO_ENABLE_TRADING=true`:
+
+`place_order`, `cancel_order`, `cancel_all_orders`, `close_positions`, `set_leverage`, `transfer`
+
+## Conventions
+
+Markets use native ids: spot as `ETHUSDT`, perpetual as `BTCUSDT-PERP`. Amounts and prices are decimal strings. All results are raw exchange JSON.
+
+## Order types
+
+`place_order` supports the same single-order types for both Spot and Perpetual:
+
+<AccordionGroup>
+  <Accordion title="limit">
+    Requires `price`.
+  </Accordion>
+  <Accordion title="market">
+    No `price`.
+  </Accordion>
+  <Accordion title="post_only">
+    Requires `price` and guarantees the order is maker-only.
+  </Accordion>
+  <Accordion title="trigger_limit (Stop Limit)">
+    Requires both `trigger_price` and `price`.
+  </Accordion>
+  <Accordion title="trigger_market (Stop Market)">
+    Requires `trigger_price`.
+  </Accordion>
+</AccordionGroup>
+
+Perpetual trigger orders also accept an optional `trigger_type` of `stop_loss` or `take_profit`. Order queries return the classified conditional type, such as `stop_limit`, `stop_loss`, `take_limit`, or `take_profit`. `cancel_order` accepts either the request type (`trigger_*`) or these returned types and normalizes Spot cancellation.
+
+## Position modes (Perpetual)
+
+Perpetual markets have a per-market position mode, listed under `position_modes` in `get_perpetual_accounts`.
+
+<Tabs>
+  <Tab title="HEDGE mode">
+    A market holds separate long and short legs. Orders take `direction` `long` or `short`, defaulting from `side` and flipped by `reduce_only`.
+  </Tab>
+  <Tab title="ONE_WAY mode">
+    A market holds a single net position. The exchange requires `direction: "both"` — pass it explicitly, it is never inferred.
+  </Tab>
+</Tabs>
+
+<Info>
+Switching position modes is only available in the Yellow.pro web UI, not through the MCP.
+</Info>
+
+## Pagination
+
+Most list tools use the documented opt-in cursor protocol. Omit `cursor` for the first request; the MCP sends `use_cursor=true`. Pass the returned `next_cursor` to fetch the next page. `page_size` defaults to 50 and is capped at 100.
+
+Fill-level position history is cursor-native: its first request omits both `cursor` and `use_cursor`, and its documented `page_size` maximum is 500.
+
+The `yellow-pro` CLI mirrors this entire surface — run `yellow-pro --help`.

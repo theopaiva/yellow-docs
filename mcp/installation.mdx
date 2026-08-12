@@ -1,0 +1,73 @@
+---
+title: "Installation"
+icon: "download"
+description: "Install the Yellow.pro MCP server and register it with your AI agent client."
+---
+
+## One-liner install
+
+Install from GitHub and register with Claude Code in a single step:
+
+```bash
+curl -fsSL -H 'Accept: application/vnd.github.raw+json' \
+  'https://api.github.com/repos/layer-3/yellow-pro-mcp/contents/install.sh?ref=main' | bash && \
+  YELLOW_PRO_API_KEY=... YELLOW_PRO_API_SECRET=... YELLOW_PRO_APP_SESSION_ID=... \
+  yellow-pro setup claude-code
+```
+
+The installer checks for Node.js 18 or newer, builds in a temporary directory, installs a packed tarball globally, and cleans up the temporary files afterward. If the system npm prefix is not writable, it installs under `~/.local` instead.
+
+<Info>
+The repository is public, so installation does not require GitHub credentials. If your environment does not permit `curl | bash`, inspect `install.sh` before running it.
+</Info>
+
+## Register with a client
+
+Register any MCP client with the installed server. For Claude Code:
+
+```bash
+claude mcp add yellow_pro -s user \
+  -e YELLOW_PRO_API_KEY=... -e YELLOW_PRO_API_SECRET=... -e YELLOW_PRO_APP_SESSION_ID=... \
+  -- yellow-pro-mcp
+```
+
+## Multi-client setup
+
+Each command below registers the MCP server using your current `YELLOW_PRO_*` environment variables:
+
+| Command | What it does |
+| --- | --- |
+| `yellow-pro setup claude-code` | Registers via `claude mcp add` (user scope) |
+| `yellow-pro setup codex` | Registers via `codex mcp add`, falls back to a `config.toml` snippet |
+| `yellow-pro setup openclaw` | Writes an `~/.openclaw/openclaw.json` mcpServers entry |
+| `yellow-pro setup hermes` | Registers via `hermes mcp add`, falls back to a `config.yaml` snippet |
+| `yellow-pro setup json` | Prints generic MCP JSON for any other client |
+
+Installing with `npm i -g` (or from a local checkout with `npm i -g /path/to/yellow_pro_mcp`) provides both the `yellow-pro-mcp` server and the `yellow-pro` CLI.
+
+## Manual configuration
+
+If you prefer to configure your client by hand:
+
+<Tabs>
+  <Tab title="Codex CLI">
+    Add to `~/.codex/config.toml`:
+
+    ```toml
+    [mcp_servers.yellow_pro]
+    command = "yellow-pro-mcp"
+    env = { YELLOW_PRO_API_KEY = "...", YELLOW_PRO_API_SECRET = "...", YELLOW_PRO_APP_SESSION_ID = "..." }
+    ```
+  </Tab>
+  <Tab title="OpenClaw / Claude Desktop / Cursor">
+    Add to the client's MCP config (e.g. `~/.openclaw/openclaw.json`):
+
+    ```json
+    { "mcpServers": { "yellow_pro": { "command": "yellow-pro-mcp", "env": { "YELLOW_PRO_API_KEY": "..." } } } }
+    ```
+  </Tab>
+</Tabs>
+
+## Agent skill (non-MCP agents)
+
+For agents that don't speak MCP, the repository ships an agent skill at `skills/yellow-pro/SKILL.md` that teaches agents to use the `yellow-pro` CLI. Copy it into your agent's skills directory, for example `~/.claude/skills/yellow-pro/`.

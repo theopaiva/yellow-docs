@@ -7,10 +7,7 @@
     "light": "#F5D547",
     "dark": "#B8940A"
   },
-  "favicon": {
-    "light": "/yellow-logo.svg",
-    "dark": "/yellow-logo.svg"
-  },
+  "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
@@ -158,6 +155,21 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "MCP",
+        "groups": [
+          {
+            "group": "MCP Server",
+            "pages": [
+              "mcp/overview",
+              "mcp/installation",
+              "mcp/configuration",
+              "mcp/tools",
+              "mcp/troubleshooting"
+            ]
+          }
+        ]
       }
     ]
   },
@@ -176,7 +188,6 @@
   },
   "logo": {
     "light": "/logo/yellow-guide.svg",
-    "dark": "/logo/yellow-guide-dark.svg",
-    "href": "https://yellow-pro.mintlify.site/"
+    "dark": "/logo/yellow-guide-dark.svg"
   }
 }

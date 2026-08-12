@@ -1,0 +1,49 @@
+---
+title: "Yellow.pro MCP Server"
+icon: "robot"
+description: "An MCP server and CLI that exposes the Yellow.pro exchange to AI agents — market data, account state, and opt-in trading."
+---
+
+The Yellow.pro MCP server exposes the exchange to AI agents such as Claude Code, Codex CLI, OpenClaw, Cursor, or any other MCP client. It provides market data, account state, and — when explicitly enabled — trading.
+
+It runs as a local stdio process and follows the same conventions as the official OKX, Bybit, and Alpaca exchange MCP servers. Your credentials stay on your machine, passed through environment variables or your MCP client's local config, and are never sent anywhere else.
+
+<Info>
+Source and latest releases: [github.com/layer-3/yellow-pro-mcp](https://github.com/layer-3/yellow-pro-mcp). The endpoint and request contracts follow the current [Yellow.pro API documentation](/api-and-programmatic-access/overview).
+</Info>
+
+## Key characteristics
+
+<CardGroup cols={2}>
+  <Card title="Read-only by default" icon="lock">
+    Market data works without credentials. Trading tools are not registered unless you explicitly opt in.
+  </Card>
+  <Card title="Local & private" icon="shield-halved">
+    Runs as a local stdio process. API keys live in your environment or client config and never leave your machine.
+  </Card>
+  <Card title="Module filtering" icon="filter">
+    Load only the tool groups you need — market, account, or trading — via a single environment variable.
+  </Card>
+  <Card title="CLI + agent skill" icon="terminal">
+    Ships with a `yellow-pro` CLI mirroring the full surface, plus a skill file for non-MCP agents.
+  </Card>
+</CardGroup>
+
+## What's included
+
+Installing the package globally gives you two commands:
+
+- `yellow-pro-mcp` — the MCP server that MCP clients spawn.
+- `yellow-pro` — a CLI that mirrors the same surface (`yellow-pro --help`).
+
+Built-in rate limiting and the opt-in cursor pagination protocol are handled for you.
+
+## Compatible clients
+
+The server works with any MCP client. First-class setup helpers exist for Claude Code, Codex CLI, OpenClaw, and Hermes, plus a generic JSON output for everything else. See [Installation](/mcp/installation) to get started.
+
+## Scope
+
+<Warning>
+Two things are intentionally **not** implemented: EIP-191/JWT authentication and WebSocket streams. The MCP uses API-key (HMAC-SHA256) authentication only. For those flows, use the [REST and WebSocket APIs](/api-and-programmatic-access/overview) directly.
+</Warning>
