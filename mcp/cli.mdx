@@ -1,0 +1,44 @@
+---
+title: "CLI reference"
+icon: "terminal"
+description: "The yellow-pro CLI covers the same surface as the MCP tools, but the command names differ — here is the mapping."
+---
+
+Installing the package gives you a `yellow-pro` CLI alongside the MCP server. It covers the same surface, reads the same `YELLOW_PRO_*` environment variables, and respects the same trading opt-in.
+
+```bash
+yellow-pro --help
+```
+
+## Command names differ from tool names
+
+The commands are shortened, so a tool name is not a valid command. Use this mapping when moving between an agent conversation and the terminal.
+
+| MCP tool | CLI command |
+| --- | --- |
+| `get_order_history` | `yellow-pro orders` |
+| `get_my_trades` | `yellow-pro trades` |
+| `get_transaction_history` | `yellow-pro transactions` |
+| `get_funding_rate` | `yellow-pro funding` |
+
+<Info>
+This table covers the commands whose names diverge most from their tool names. Run `yellow-pro --help` for the authoritative list on your installed version.
+</Info>
+
+## Setup commands
+
+The CLI also registers the MCP server with your client:
+
+```bash
+yellow-pro setup claude-code
+yellow-pro setup codex
+yellow-pro setup openclaw
+yellow-pro setup hermes
+yellow-pro setup json
+```
+
+See [Installation](/mcp/installation) for what each one writes, including the `hermes` caveat.
+
+## Trading from the CLI
+
+Trading commands follow the same gate as the MCP tools: they do nothing unless `YELLOW_PRO_ENABLE_TRADING` is set to `true`. The account-wide behaviour of cancel-all and close-all applies here too — see [Risk and safety](/mcp/risk-and-safety).

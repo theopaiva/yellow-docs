@@ -1,7 +1,7 @@
 ---
 title: "Troubleshooting"
 icon: "wrench"
-description: "Common issues with the Yellow.pro MCP server — connection, authentication, and trading — and how to resolve them."
+description: "Common issues with the Yellow.pro MCP server — connection, authentication, permissions, and error behaviour."
 ---
 
 ## Client shows no tools / server fails to connect
@@ -22,14 +22,24 @@ description: "Common issues with the Yellow.pro MCP server — connection, authe
     ```bash
     echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}' | yellow-pro-mcp
     ```
+
+    A healthy response contains a `serverInfo` block and exits cleanly.
   </Step>
 </Steps>
+
+## Some tools are missing
+
+Check `YELLOW_PRO_MODULES` character by character. Unrecognised names are silently dropped with no warning, so a plural typo like `markets,account` leaves you with account-only tools. The only accepted tokens are `market`, `account`, and `trading`.
+
+If trading tools specifically are absent, `YELLOW_PRO_ENABLE_TRADING` is not set to `true`.
 
 ## Authentication errors
 
 **`invalid_api_key`**
 
-Private tools need all three of `YELLOW_PRO_API_KEY`, `YELLOW_PRO_API_SECRET`, and `YELLOW_PRO_APP_SESSION_ID`, and they must match the environment you are hitting. Staging keys (`YELLOW_PRO_SANDBOX=true`) do not work on production, and vice versa.
+Private tools need all three of `YELLOW_PRO_API_KEY`, `YELLOW_PRO_API_SECRET`, and `YELLOW_PRO_APP_SESSION_ID`, and they must match the environment you are hitting. Staging keys do not work on production, and vice versa.
+
+If you registered with `yellow-pro setup hermes`, the credentials were almost certainly not written — see the [hermes caveat](/mcp/installation#setup-helpers).
 
 **`invalid_timestamp`**
 
@@ -46,19 +56,39 @@ Your machine clock is more than a few seconds off the exchange's. Sync it:
   </Tab>
 </Tabs>
 
+**Permission / `403` errors on a tool that otherwise works**
+
+The API key is missing a scope. Check it against the [scope table](/mcp/credentials#scopes-and-tools) — reads and trades are separate scopes, and spot and futures are separate again.
+
 ## Trading commands fail with "trading is disabled"
 
 Set `YELLOW_PRO_ENABLE_TRADING=true` in the MCP client's env config. This is intentional.
 
 <Warning>
-Do not work around this by calling the REST API directly. The flag exists so that order placement is a deliberate action.
+Do not work around this by calling the REST API directly. The flag exists so that order placement is a deliberate action. Read [Risk and safety](/mcp/risk-and-safety) first.
 </Warning>
 
-## Risk warning
+## Empty results instead of data
 
-Trading involves risk of loss. Before use:
+Almost always a timestamp unit mismatch. The three formats in use — milliseconds, Unix seconds, and RFC3339 — vary per tool, and the wrong one returns an empty set rather than an error. See the [timestamp table](/mcp/tools#timestamp-units-differ-per-tool).
 
-- **Protect your credentials** — grant API keys the minimum permissions needed and never commit them to source control.
-- **Test on staging first** — run with `YELLOW_PRO_SANDBOX=true` against staging before pointing at production.
-- **Trading is off by default** — order tools only exist when `YELLOW_PRO_ENABLE_TRADING=true`. Review every order the agent proposes before letting it through.
-- **You are in control** — all actions are initiated by you or your AI assistant; the maintainers are not responsible for losses from agent behavior.
+## Error behaviour worth knowing
+
+<AccordionGroup>
+  <Accordion title="429 responses fail immediately">
+    Rate-limit responses are thrown straight away — there is no retry and no backoff. Lowering `YELLOW_PRO_RATE_LIMIT_MS` therefore converts throttling into hard failures rather than slower requests. The default is 100 ms.
+  </Accordion>
+  <Accordion title="Requests time out at 30 seconds">
+    There is no configurable timeout.
+  </Accordion>
+  <Accordion title="Error-shaped HTTP 200 responses become thrown errors">
+    The exchange sometimes returns an error body with a 200 status. The client converts these into thrown errors, which is the right behaviour but will look different from raw `curl` output if you are comparing the two.
+  </Accordion>
+  <Accordion title="get_markets hides perpetual-side failures">
+    If the perpetual side is unavailable, `get_markets` returns `{"perp":{"unavailable":"..."}}` rather than erroring — so an agent may report that no perpetual markets exist. Check for that key before believing an empty list.
+  </Accordion>
+</AccordionGroup>
+
+## Still stuck
+
+Contact [support](/community-and-resources/contact-support), or open an issue on [github.com/layer-3/yellow-pro-mcp](https://github.com/layer-3/yellow-pro-mcp). Include the `serverInfo.version` from the handshake above so the version you are running is unambiguous.

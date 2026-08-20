@@ -1,0 +1,37 @@
+---
+title: "Risk and safety"
+icon: "shield-halved"
+description: "What to understand before letting an agent trade on your Yellow.pro account — account-wide tools, credential storage, and safe rollout."
+---
+
+Trading involves risk of loss. An AI agent placing orders adds a second kind of risk: a short, reasonable-sounding request can map to a much larger action than intended.
+
+## Two tools act on your entire account
+
+<Warning>
+**`cancel_all_orders` called without a `market` cancels every open order on that market type.** **`close_positions` called without a `market` closes every position leg.** Both are single-word requests for an agent — "cancel my orders", "close everything" — with no per-order confirmation step in the protocol.
+</Warning>
+
+If you want a narrower action, make sure the market is specified. Treat these two as the reason to enable trading only when you are actively supervising the session.
+
+## Roll out in stages
+
+Do not go from nothing to trading in one step. The [setup ladder](/mcp/choose-your-setup) exists for this: market data first, then read-only account access, then trading. Each level verifies before the next adds risk.
+
+## Protect your credentials
+
+- **Grant minimum scopes.** In particular, leave `withdraw:spot` off — the MCP exposes no withdrawal tool, so the scope buys you nothing and removes the worst-case outcome. See the [scope table](/mcp/credentials#scopes-and-tools).
+- **Know where the secret lands.** Credentials are only ever sent to the Yellow.pro API, but the setup helpers write them to disk in cleartext (`~/.claude.json`, `~/.openclaw/openclaw.json`) and the one-line installer puts them in your shell history.
+- **Revoke on exposure.** If a config file or shell history leaks, revoke the key immediately and issue a new one. See [API Key Management](/api-and-programmatic-access/api-key-management).
+- **Never commit credentials** to source control.
+
+## Understand what the agent cannot do
+
+The server has no withdrawal tool and no position-mode switch. Funds cannot leave the exchange through the MCP, and `transfer` only moves value between your own spot and perpetual accounts.
+
+## Review before you trust
+
+- Trading tools only exist when `YELLOW_PRO_ENABLE_TRADING=true`. Turn it off when you are not actively trading.
+- Review every order an agent proposes before letting it through, especially size and direction.
+- Remember that perpetual `place_order` does not set your real leverage — `set_leverage` does. See [Tools](/mcp/tools#perpetual-behaviour-worth-knowing).
+- All actions are initiated by you or your AI assistant; the maintainers are not responsible for losses from agent behaviour.

@@ -1,0 +1,56 @@
+---
+title: "Choose your setup"
+icon: "list-check"
+description: "Three setups in increasing order of access and risk — market data only, full account access, then trading."
+---
+
+Three environment variables and two flags is a lot to absorb at once. You don't need all of them. Pick the level you actually want and verify it works before adding the next one.
+
+## Level 1 — Market data only
+
+No credentials at all. Proves the install and the client wiring with nothing at risk.
+
+```bash
+YELLOW_PRO_MODULES=market
+```
+
+You get prices, order books, klines, funding rates, and the supported networks and assets. Every tool in the [market module](/mcp/tools#market) works with no key.
+
+<Tip>
+Start here even if you ultimately want trading. If market data works, the server is installed and your client is spawning it correctly — which eliminates most of the [troubleshooting](/mcp/troubleshooting) surface before credentials are involved.
+</Tip>
+
+## Level 2 — Full account access, still read-only
+
+Add the three credentials. You can now read balances, orders, positions, fills, fee tiers, and history. No order can be placed, because trading tools are not registered.
+
+```bash
+YELLOW_PRO_API_KEY=...
+YELLOW_PRO_API_SECRET=...
+YELLOW_PRO_APP_SESSION_ID=...
+YELLOW_PRO_MODULES=market,account
+```
+
+See [Getting your credentials](/mcp/credentials) for how to obtain these, and the [scope table](/mcp/credentials#scopes-and-tools) for which API-key permissions each group of tools needs.
+
+## Level 3 — Trading
+
+Add the opt-in flag. Order placement, cancellation, position closing, leverage changes, and internal transfers become available.
+
+```bash
+YELLOW_PRO_ENABLE_TRADING=true
+```
+
+<Warning>
+Read [Risk and safety](/mcp/risk-and-safety) before this step. Two tools — `cancel_all_orders` and `close_positions` — act on your **entire** account when called without a market, and they are single-word requests for an agent.
+</Warning>
+
+## Which module does what
+
+| Module | Credentials | Contains |
+| --- | --- | --- |
+| `market` | Not required | Public market data |
+| `account` | Required (except `get_fee_schedule`) | Balances, orders, positions, history, fee tiers |
+| `trading` | Required, plus `YELLOW_PRO_ENABLE_TRADING=true` | Orders, position closing, leverage, transfers |
+
+Omitting `YELLOW_PRO_MODULES` loads all modules. Full details in [Configuration](/mcp/configuration).

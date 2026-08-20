@@ -1,7 +1,7 @@
 ---
 title: "Tools"
 icon: "toolbox"
-description: "The full tool surface of the Yellow.pro MCP server — market data, account state, and opt-in trading — plus order types and pagination."
+description: "The full tool surface of the Yellow.pro MCP server — market data, account state, and opt-in trading — plus order types, timestamp units, and pagination."
 ---
 
 Tools are grouped into three modules. Market tools need no credentials; account and trading tools do. Trading is opt-in (see [Configuration](/mcp/configuration)).
@@ -12,11 +12,21 @@ Available without credentials:
 
 `get_health`, `get_markets`, `get_ticker`, `get_orderbook`, `get_klines`, `get_funding_rate`, `get_funding_rate_history`, `get_networks`, `get_transfer_assets`
 
+<Warning>
+`get_markets` does not fail if the perpetual side is unavailable. It returns `{"perp":{"unavailable":"..."}}` instead of an error, which an agent may report as "there are no perpetual markets". Check for that key before trusting an empty perp list.
+</Warning>
+
 ## Account
 
-Require API credentials:
+Require API credentials, with one exception noted below:
 
 `get_balance`, `get_open_orders`, `get_order_history`, `get_my_trades`, `get_positions`, `get_position_history`, `get_position_history_detail`, `get_spot_accounts`, `get_spot_account`, `get_perpetual_accounts`, `get_fee_schedule`, `get_fee_tier`, `get_market_fee_rate`, `get_transaction_history`, `get_funding_payments`
+
+<Info>
+**`get_fee_schedule` is public.** It calls a public endpoint and works with no credentials at all, despite sitting in this list. Because it lives in the `account` module, `YELLOW_PRO_MODULES=market` hides it — so a credential-free market-data agent needs `market,account` to reach the public fee schedule.
+</Info>
+
+Which API-key scope each group needs is in the [scope table](/mcp/credentials#scopes-and-tools).
 
 ## Trading (opt-in)
 
@@ -24,13 +34,27 @@ Only registered when `YELLOW_PRO_ENABLE_TRADING=true`:
 
 `place_order`, `cancel_order`, `cancel_all_orders`, `close_positions`, `set_leverage`, `transfer`
 
+<Warning>
+`cancel_all_orders` and `close_positions` act on your whole account when called without a `market`. See [Risk and safety](/mcp/risk-and-safety).
+</Warning>
+
 ## Conventions
 
 Markets use native ids: spot as `ETHUSDT`, perpetual as `BTCUSDT-PERP`. Amounts and prices are decimal strings. All results are raw exchange JSON.
 
+## Timestamp units differ per tool
+
+Three formats are in use. Passing the wrong one returns an **empty result set rather than an error**, so it reads as "no data" instead of a mistake.
+
+| Tool | Unit |
+| --- | --- |
+| `get_klines` | Milliseconds |
+| `get_transaction_history` | Unix seconds |
+| `get_my_trades`, `get_position_history`, `get_position_history_detail`, `get_funding_payments` | RFC3339 |
+
 ## Order types
 
-`place_order` supports the same single-order types for both Spot and Perpetual:
+`place_order` supports these single-order types:
 
 <AccordionGroup>
   <Accordion title="limit">
@@ -50,7 +74,26 @@ Markets use native ids: spot as `ETHUSDT`, perpetual as `BTCUSDT-PERP`. Amounts 
   </Accordion>
 </AccordionGroup>
 
+<Warning>
+`post_only` is accepted by the MCP but is **not currently listed** in the published [Spot Trading API](/api-and-programmatic-access/spot-trading-api) or [Perpetuals Trading API](/api-and-programmatic-access/perpetuals-trading-api) order types. Confirm with [support](/community-and-resources/contact-support) before relying on it — the exchange may reject the order.
+</Warning>
+
 Perpetual trigger orders also accept an optional `trigger_type` of `stop_loss` or `take_profit`. Order queries return the classified conditional type, such as `stop_limit`, `stop_loss`, `take_limit`, or `take_profit`. `cancel_order` accepts either the request type (`trigger_*`) or these returned types and normalizes Spot cancellation.
+
+### Time in force
+
+Not passed explicitly, `time_in_force` defaults to `gtc` for limit-style orders and `ioc` for market-style orders.
+
+## Perpetual behaviour worth knowing
+
+<AccordionGroup>
+  <Accordion title="Leverage is always sent, and place_order is not where you set it">
+    Perpetual `place_order` always sends a `leverage` value, defaulting to `"1"`. The effective margin still follows your account and market settings, so passing leverage here does not change your real leverage — `set_leverage` is the actual control.
+  </Accordion>
+  <Accordion title="Perpetuals are cross margin only">
+    There is no isolated-margin mode. Risk is aggregated across positions; see [Cross-Margin Risk & ADL](/perpetual-trading/risk-and-liquidation/cross-margin-risk-and-adl).
+  </Accordion>
+</AccordionGroup>
 
 ## Position modes (Perpetual)
 
@@ -69,10 +112,18 @@ Perpetual markets have a per-market position mode, listed under `position_modes`
 Switching position modes is only available in the Yellow.pro web UI, not through the MCP.
 </Info>
 
+## Transfers
+
+`transfer` moves funds between your spot and perpetual accounts. Constraints from the [Account Transfers API](/api-and-programmatic-access/account-transfers-api):
+
+- Only stablecoins can move between spot and perpetuals.
+- Source and destination must differ. The MCP schema permits identical values, but the exchange rejects them.
+- Perpetuals-to-spot transfers are capped at 80% of `min(total - locked, available)`.
+
 ## Pagination
 
 Most list tools use the documented opt-in cursor protocol. Omit `cursor` for the first request; the MCP sends `use_cursor=true`. Pass the returned `next_cursor` to fetch the next page. `page_size` defaults to 50 and is capped at 100.
 
-Fill-level position history is cursor-native: its first request omits both `cursor` and `use_cursor`, and its documented `page_size` maximum is 500.
+Fill-level position history (`get_position_history_detail`) is cursor-native: its first request omits both `cursor` and `use_cursor`, and its `page_size` defaults to **200** with a maximum of **500**.
 
-The `yellow-pro` CLI mirrors this entire surface — run `yellow-pro --help`.
+The `yellow-pro` CLI covers this same surface under different command names — see the [CLI reference](/mcp/cli).

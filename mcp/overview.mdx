@@ -6,7 +6,7 @@ description: "An MCP server and CLI that exposes the Yellow.pro exchange to AI a
 
 The Yellow.pro MCP server exposes the exchange to AI agents such as Claude Code, Codex CLI, OpenClaw, Cursor, or any other MCP client. It provides market data, account state, and — when explicitly enabled — trading.
 
-It runs as a local stdio process and follows the same conventions as the official OKX, Bybit, and Alpaca exchange MCP servers. Your credentials stay on your machine, passed through environment variables or your MCP client's local config, and are never sent anywhere else.
+It runs as a local stdio process and follows the same conventions as the official OKX, Bybit, and Alpaca exchange MCP servers.
 
 <Info>
 Source and latest releases: [github.com/layer-3/yellow-pro-mcp](https://github.com/layer-3/yellow-pro-mcp). The endpoint and request contracts follow the current [Yellow.pro API documentation](/api-and-programmatic-access/overview).
@@ -18,29 +18,45 @@ Source and latest releases: [github.com/layer-3/yellow-pro-mcp](https://github.c
   <Card title="Read-only by default" icon="lock">
     Market data works without credentials. Trading tools are not registered unless you explicitly opt in.
   </Card>
-  <Card title="Local & private" icon="shield-halved">
-    Runs as a local stdio process. API keys live in your environment or client config and never leave your machine.
+  <Card title="Local process" icon="shield-halved">
+    Runs as a local stdio process. Credentials are read from your environment or MCP client config and are sent only to the Yellow.pro API.
   </Card>
   <Card title="Module filtering" icon="filter">
     Load only the tool groups you need — market, account, or trading — via a single environment variable.
   </Card>
   <Card title="CLI + agent skill" icon="terminal">
-    Ships with a `yellow-pro` CLI mirroring the full surface, plus a skill file for non-MCP agents.
+    Ships with a `yellow-pro` CLI covering the same surface, plus a skill file for non-MCP agents.
   </Card>
 </CardGroup>
 
 ## What's included
 
-Installing the package globally gives you two commands:
+Installing the package gives you two commands:
 
 - `yellow-pro-mcp` — the MCP server that MCP clients spawn.
-- `yellow-pro` — a CLI that mirrors the same surface (`yellow-pro --help`).
+- `yellow-pro` — a CLI covering the same surface (`yellow-pro --help`). Command names differ from tool names; see the [CLI reference](/mcp/cli).
 
 Built-in rate limiting and the opt-in cursor pagination protocol are handled for you.
 
+## Before you start
+
+You need API credentials for anything account-related. The MCP **cannot create its own credentials** — EIP-191 wallet signing and JWT authentication are deliberately not implemented here, so you obtain keys through the API first.
+
+<Steps>
+  <Step title="Decide what you're setting up">
+    Market data only, full account access, or trading. See [Choose your setup](/mcp/choose-your-setup).
+  </Step>
+  <Step title="Get your credentials">
+    Only needed beyond market data. See [Getting your credentials](/mcp/credentials).
+  </Step>
+  <Step title="Install and register">
+    See [Installation](/mcp/installation).
+  </Step>
+</Steps>
+
 ## Compatible clients
 
-The server works with any MCP client. First-class `setup` helpers exist for Claude Code, Codex CLI, OpenClaw, and Hermes, plus a generic JSON output for every other client (Cursor, Claude Desktop, and so on). See [Installation](/mcp/installation) to get started.
+The server works with any MCP client. First-class `setup` helpers exist for Claude Code, Codex CLI, OpenClaw, and Hermes, plus a generic JSON output for every other client (Cursor, Claude Desktop, and so on). See [Installation](/mcp/installation).
 
 ## Scope
 

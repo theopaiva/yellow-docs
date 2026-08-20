@@ -11,34 +11,64 @@ The server is configured entirely through environment variables, set in your MCP
 | Variable | Required | Default | Description |
 | --- | --- | --- | --- |
 | `YELLOW_PRO_BASE_URL` | No | selected by `YELLOW_PRO_SANDBOX` | Explicit REST base URL override |
-| `YELLOW_PRO_SANDBOX` | No | `false` | Exactly `true` uses staging; otherwise production |
+| `YELLOW_PRO_SANDBOX` | No | `false` | Case-insensitive `true` uses staging; any other value uses production |
 | `YELLOW_PRO_API_KEY` | Private tools | — | API key |
 | `YELLOW_PRO_API_SECRET` | Private tools | — | API secret (HMAC-SHA256) |
-| `YELLOW_PRO_APP_SESSION_ID` | Private tools | — | App session id (`uid` credential) |
-| `YELLOW_PRO_ENABLE_TRADING` | No | off | Exactly `true` to enable trading tools/commands |
-| `YELLOW_PRO_MODULES` | No | all | Comma list of `market,account,trading` to filter tools |
+| `YELLOW_PRO_APP_SESSION_ID` | Private tools | — | App session id, included in the request signature |
+| `YELLOW_PRO_ENABLE_TRADING` | No | off | Case-insensitive `true` enables trading tools; any other value leaves them off |
+| `YELLOW_PRO_MODULES` | No | all | Comma list of `market`, `account`, `trading` |
 | `YELLOW_PRO_RATE_LIMIT_MS` | No | `100` | Minimum gap between requests, in milliseconds |
+
+<Info>
+Both boolean flags are compared case-insensitively, so `true`, `True`, and `TRUE` all work. Anything else — including `1` and `yes` — counts as off.
+</Info>
 
 ## Environments
 
 By default the server talks to production at `https://trade.api.yellow.pro`. Setting `YELLOW_PRO_SANDBOX=true` switches to staging at `https://api.staging.yellow.pro.neodax.app`. An explicit `YELLOW_PRO_BASE_URL` takes precedence over sandbox mode.
 
 <Warning>
-Credentials are environment-specific. Keys created for staging (`YELLOW_PRO_SANDBOX=true`) do not work on production, and vice versa.
+Credentials are environment-specific: keys created for staging do not work on production, and vice versa. Note that there is currently no documented way to obtain staging credentials — see [Getting your credentials](/mcp/credentials#environments).
 </Warning>
 
 ## Credentials
 
-Market data tools work without any credentials. Private tools — anything touching account state or trading — require all three of `YELLOW_PRO_API_KEY`, `YELLOW_PRO_API_SECRET`, and `YELLOW_PRO_APP_SESSION_ID`.
+Market data tools work without any credentials. Everything else requires all three of `YELLOW_PRO_API_KEY`, `YELLOW_PRO_API_SECRET`, and `YELLOW_PRO_APP_SESSION_ID`. See [Getting your credentials](/mcp/credentials).
+
+One exception: `get_fee_schedule` lives in the `account` module but calls a public endpoint and needs no credentials.
 
 ## Enabling trading
 
-Trading tools are **not registered** unless `YELLOW_PRO_ENABLE_TRADING=true`. This is a deliberate safety default.
+Trading tools are **not registered** unless `YELLOW_PRO_ENABLE_TRADING` is set to `true`. This is a deliberate safety default: with the flag off, an agent has no order-placing tool to call at all.
 
 <Warning>
-Do not work around a disabled-trading state by calling the REST API directly. The opt-in flag exists so that order placement is a conscious choice.
+Do not work around a disabled-trading state by calling the REST API directly. The opt-in flag exists so that order placement is a conscious choice. Read [Risk and safety](/mcp/risk-and-safety) first.
 </Warning>
 
 ## Module filtering
 
-Use `YELLOW_PRO_MODULES` to load only the tool groups you need. For example, `YELLOW_PRO_MODULES=market,account` exposes market data and account tools but omits trading entirely. See [Tools](/mcp/tools) for what each module contains.
+`YELLOW_PRO_MODULES` accepts exactly three tokens, comma-separated:
+
+```bash
+YELLOW_PRO_MODULES=market,account
+```
+
+| Token | Loads |
+| --- | --- |
+| `market` | Public market-data tools |
+| `account` | Account state, history, fee tiers |
+| `trading` | Order placement, cancellation, position management, transfers |
+
+Omit the variable to load everything. Listing `trading` still has no effect unless `YELLOW_PRO_ENABLE_TRADING=true`.
+
+<Warning>
+**Unrecognised module names are silently dropped** — no warning, no error. A plural typo such as `markets,account` yields account-only tools and looks like a broken install. If tools are missing, check this value character by character.
+</Warning>
+
+## Rate limiting
+
+`YELLOW_PRO_RATE_LIMIT_MS` sets the minimum gap between outbound requests, defaulting to 100 ms.
+
+<Warning>
+Lowering this does not make the client more resilient. A `429` from the exchange is thrown immediately with no retry and no backoff, so an aggressive value converts throttling into hard failures.
+</Warning>

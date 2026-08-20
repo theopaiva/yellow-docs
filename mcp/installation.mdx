@@ -1,12 +1,28 @@
 ---
 title: "Installation"
 icon: "download"
-description: "Install the Yellow.pro MCP server and register it with your AI agent client."
+description: "Install the Yellow.pro MCP server, register it with your AI agent client, and verify it works."
 ---
 
-## One-liner install
+## Prerequisites
 
-Install from GitHub and register with Claude Code in a single step:
+The installer clones over HTTPS and builds locally, so it needs:
+
+- **Node.js 18 or newer**
+- **`git`** and **`npm`** on your `PATH`
+- **Network access** to GitHub and the npm registry
+
+Relevant for locked-down machines and CI images: the install will fail without a `git` binary or outbound network.
+
+## Install
+
+<Warning>
+This package is **not published to the npm registry**. `npm install -g yellow-pro-mcp` will fail with a 404. Use one of the two paths below.
+</Warning>
+
+### Option A — one-line installer
+
+Installs from GitHub and registers with Claude Code in a single step:
 
 ```bash
 curl -fsSL -H 'Accept: application/vnd.github.raw+json' \
@@ -15,15 +31,26 @@ curl -fsSL -H 'Accept: application/vnd.github.raw+json' \
   yellow-pro setup claude-code
 ```
 
-The installer checks for Node.js 18 or newer, builds in a temporary directory, installs a packed tarball globally, and cleans up the temporary files afterward. If the system npm prefix is not writable, it installs under `~/.local` instead.
+The installer checks the Node version, builds in a temporary directory, installs a packed tarball globally, and cleans up afterwards. If the system npm prefix is not writable, it installs under `~/.local` instead and prints a `PATH` hint.
 
 <Info>
-The repository is public, so installation does not require GitHub credentials. If your environment does not permit `curl | bash`, inspect `install.sh` before running it.
+The repository is public, so installation does not require GitHub credentials. If your environment does not permit `curl | bash`, inspect `install.sh` before running it. Note that credentials passed on the command line land in your shell history.
 </Info>
+
+### Option B — local checkout
+
+```bash
+git clone https://github.com/layer-3/yellow-pro-mcp.git
+cd yellow-pro-mcp
+npm ci && npm run build
+npm install -g .
+```
+
+Either path gives you both the `yellow-pro-mcp` server and the `yellow-pro` CLI.
 
 ## Register with a client
 
-Register any MCP client with the installed server. For Claude Code:
+For Claude Code:
 
 ```bash
 claude mcp add yellow_pro -s user \
@@ -31,23 +58,21 @@ claude mcp add yellow_pro -s user \
   -- yellow-pro-mcp
 ```
 
-## Multi-client setup
-
-Each command below registers the MCP server using your current `YELLOW_PRO_*` environment variables:
+### Setup helpers
 
 | Command | What it does |
 | --- | --- |
-| `yellow-pro setup claude-code` | Registers via `claude mcp add` (user scope) |
-| `yellow-pro setup codex` | Registers via `codex mcp add`, falls back to a `config.toml` snippet |
-| `yellow-pro setup openclaw` | Writes an `~/.openclaw/openclaw.json` mcpServers entry |
-| `yellow-pro setup hermes` | Registers via `hermes mcp add`, falls back to a `config.yaml` snippet |
+| `yellow-pro setup claude-code` | Registers via `claude mcp add` (user scope), passing your current `YELLOW_PRO_*` variables |
+| `yellow-pro setup codex` | Registers via `codex mcp add`, passing your variables; falls back to a `config.toml` snippet |
+| `yellow-pro setup openclaw` | Writes an `~/.openclaw/openclaw.json` mcpServers entry including your variables |
+| `yellow-pro setup hermes` | Registers via `hermes mcp add`; falls back to a `config.yaml` snippet |
 | `yellow-pro setup json` | Prints generic MCP JSON for any other client |
 
-Installing with `npm i -g` (or from a local checkout with `npm i -g /path/to/yellow_pro_mcp`) provides both the `yellow-pro-mcp` server and the `yellow-pro` CLI.
+<Warning>
+**`hermes` is an exception.** The successful `hermes mcp add` path registers the server **without** passing your credentials, so account tools will fail with a missing-credentials error. Credentials only appear in the fallback YAML snippet, which is printed when the hermes binary is absent. Until this is fixed, add the environment block to your hermes config by hand after running setup.
+</Warning>
 
 ## Manual configuration
-
-If you prefer to configure your client by hand:
 
 <Tabs>
   <Tab title="Codex CLI">
@@ -67,6 +92,40 @@ If you prefer to configure your client by hand:
     ```
   </Tab>
 </Tabs>
+
+## Verify it works
+
+Restart your client first — MCP servers connect at session start.
+
+**1. Confirm the server starts.** This handshake needs no credentials:
+
+```bash
+echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}' | yellow-pro-mcp
+```
+
+A healthy response looks like this — a `serverInfo` block and a clean exit:
+
+```json
+{"result":{"protocolVersion":"2024-11-05","capabilities":{"tools":{"listChanged":true}},
+"serverInfo":{"name":"yellow_pro","version":"20260722"},"instructions":"..."},"jsonrpc":"2.0","id":1}
+```
+
+**2. Ask your agent for market data.** Something like *"get the BTCUSDT-PERP ticker from Yellow.pro"*. A good answer returns a live price and 24h figures. This confirms the client is spawning the server and reaching the API — with no credentials involved.
+
+**3. Ask for a balance.** Only once step 2 works. *"What's my Yellow.pro spot balance?"* exercises your credentials and signature. If step 2 passed and this fails, the problem is credentials, not installation — see [Troubleshooting](/mcp/troubleshooting).
+
+## Update and uninstall
+
+**Update:** re-run the one-line installer, or `git pull` and `npm install -g .` in a local checkout. The server reports a date-based build version in `serverInfo.version`; compare it against the latest commit to tell whether you are current.
+
+**Uninstall:**
+
+```bash
+npm uninstall -g yellow-pro-mcp
+claude mcp remove yellow_pro
+```
+
+Remove the `mcpServers` entry by hand for clients configured manually, and revoke the API key if you no longer need it.
 
 ## Agent skill (non-MCP agents)
 

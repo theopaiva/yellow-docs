@@ -160,12 +160,26 @@
         "tab": "MCP",
         "groups": [
           {
-            "group": "MCP Server",
+            "group": "Getting Started",
             "pages": [
               "mcp/overview",
-              "mcp/installation",
+              "mcp/choose-your-setup",
+              "mcp/credentials",
+              "mcp/installation"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
               "mcp/configuration",
               "mcp/tools",
+              "mcp/cli"
+            ]
+          },
+          {
+            "group": "Safety & Support",
+            "pages": [
+              "mcp/risk-and-safety",
               "mcp/troubleshooting"
             ]
           }
