@@ -164,15 +164,31 @@
             "group": "Getting Started",
             "pages": [
               "mcp/overview",
-              "mcp/choose-your-setup",
+              "mcp/choose-your-setup"
+            ]
+          },
+          {
+            "group": "Connect on Yellow.pro",
+            "pages": [
+              "mcp/getting-started",
+              "mcp/fund-your-agent",
+              "mcp/api-keys",
+              "mcp/agentic-portfolio"
+            ]
+          },
+          {
+            "group": "Manual Setup",
+            "pages": [
+              "mcp/claude-code-cli",
+              "mcp/codex-cli",
               "mcp/credentials",
-              "mcp/installation"
+              "mcp/installation",
+              "mcp/configuration"
             ]
           },
           {
             "group": "Reference",
             "pages": [
-              "mcp/configuration",
               "mcp/tools",
               "mcp/cli"
             ]

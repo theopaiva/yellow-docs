@@ -1,0 +1,32 @@
+---
+title: "Manage Your API Keys"
+description: "Review, freeze, and revoke the keys minted for each connected AI client."
+---
+
+Every pairing mints a new API key for that client, scoped to exactly the permissions you chose. You can see and manage all of them from **API Key Management** in your account settings.
+
+![API Key Management screen](/images/mcp/api-key-management.png)
+
+## What each column shows
+
+| Column | What it tells you |
+| --- | --- |
+| **API Key** | A truncated identifier. The full secret is never shown here. |
+| **AI / Client** | Which assistant the key belongs to, and its access level (for example *Read & trade*). |
+| **State** | An **Active** toggle. Switching it off instantly freezes that key. |
+| **Created** / **Expire** | When the key was minted and when it expires. Keys are valid for one year. |
+| **Last Used** | The most recent call the key made — useful for spotting a client that's gone quiet, or one that's calling more than expected. |
+
+## Freezing a key
+
+<Warning>
+  Toggling **State** off is immediate and reversible, even if your AI is mid-session. It's the fastest way to cut off one AI client without touching any others connected to your account.
+</Warning>
+
+## Adding another key
+
+Click **Create** to mint an additional key manually, or go back through the [agent onboarding flow](/mcp/getting-started) to pair a brand-new client.
+
+<Note>
+  A new key is minted for each AI you connect. Revoking one stops only that agent — the others keep working, and your account and balance are unaffected.
+</Note>

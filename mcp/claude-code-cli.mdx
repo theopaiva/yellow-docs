@@ -1,0 +1,78 @@
+---
+title: "Install Claude Code CLI"
+description: "Set up the Claude Code command-line tool on your machine before wiring in the Yellow.pro MCP server."
+---
+
+<Warning>
+  Before installing an AI CLI, make sure you've completed Yellow.pro's account setup first — connecting your wallet, creating a sub-account, and completing verification. See **[Agent Onboarding](/mcp/getting-started)** for the full walkthrough. The steps below assume your Yellow.pro account is already set up and you're ready to pair an AI agent to it.
+</Warning>
+
+<Info>
+  **Claude Code** and **Claude Desktop** are two separate applications from Anthropic. Claude Desktop is the chat app (Chat/Cowork tabs); Claude Code is a command-line tool that runs in a terminal. The Yellow.pro MCP server registers with Claude Code specifically — if you only have Claude Desktop installed, the steps on the [Installation](/mcp/installation) page will not find anywhere to register.
+</Info>
+
+If `claude --version` already works in your terminal, skip ahead to [Installation](/mcp/installation). Otherwise, follow the steps below first.
+
+<Steps>
+  <Step title="Install">
+    Run the native installer for your platform:
+
+    ```bash theme={null}
+    curl -fsSL https://claude.ai/install.sh | bash
+    ```
+
+    ```powershell theme={null}
+    irm https://claude.ai/install.ps1 | iex
+    ```
+
+    This downloads the `claude` binary directly — no separate Node.js or npm setup needed for this step.
+  </Step>
+
+  <Step title="Verify">
+    Open a **new** terminal window (a window that was already open won't see the updated `PATH`), then run:
+
+    ```bash theme={null}
+    claude --version
+    ```
+
+    A working install prints something like `2.1.263 (Claude Code)`.
+
+    <Warning>
+      If you see `command not found: claude`, the installer likely finished without adding itself to your `PATH`. Fix it with:
+
+      ```bash theme={null}
+      echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
+      ```
+
+      (Use `~/.bash_profile` instead of `~/.zshrc` if your shell is bash, not zsh.) Then open a fresh terminal window and re-run `claude --version`.
+    </Warning>
+
+    <Warning>
+      If you see `claude native binary not installed`, the platform-specific binary failed to download. Re-run the installer above (not `npm install`) — this resolves it in almost all cases.
+    </Warning>
+  </Step>
+
+  <Step title="Log in">
+    Run:
+
+    ```bash theme={null}
+    claude
+    ```
+
+    This opens an interactive session and prompts you to sign in through your browser on first run. If you land on pay-per-use API billing instead of your subscription plan, run `/login` inside the session to switch.
+
+    <Info>
+      Claude Code requires a **Pro, Max, Team, Enterprise, or Console** account — the free Claude.ai plan does not include Claude Code access.
+    </Info>
+
+    Once logged in, exit back to your normal shell prompt (type `exit` or press `Ctrl+C`) before continuing to [Installation](/mcp/installation) — the Yellow.pro setup commands are regular shell commands, not something you run inside an active Claude Code session.
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<Warning>
+  **Terminal appears frozen after pasting a multi-line command.** This usually means a quote character was altered in transit (e.g. a straight `'` became a curly `'`), and the shell is silently waiting for you to close it — check whether your prompt reads `dquote>` or `quote>` instead of the normal prompt. Press `Ctrl+C` to cancel, then re-enter the commands one line at a time instead of pasting a multi-line block.
+</Warning>
+
+Next: continue to [Installation](/mcp/installation) to install and register the Yellow.pro MCP server with Claude Code.

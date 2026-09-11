@@ -1,0 +1,32 @@
+---
+title: "Agentic Portfolio"
+description: "Track your agent sub-account's holdings and performance separately from your main account."
+---
+
+Your **Portfolio** page has a **Main / Agentic** toggle at the top, so you can look at the agent sub-account's holdings completely separately from your main account.
+
+![Agentic portfolio view](/images/mcp/agentic-portfolio.png)
+
+## What the Agentic view shows
+
+<AccordionGroup>
+  <Accordion title="Performance metrics">
+    Realized P&L, Unrealized P&L, Net funding, Leverage used, and Win rate — the same metrics as your main portfolio, scoped to just the agent account.
+  </Accordion>
+
+  <Accordion title="Asset allocation">
+    Two donut charts: **Wallet allocation** (how the agent's balance splits between Spot and Perp) and **Asset breakdown** (by token, for example USDT on each side).
+  </Accordion>
+
+  <Accordion title="A card per connected key">
+    For example *Claude Code · key 4fd1...d199*, showing its scopes as short tags (`read`, `trade`, `withdraw:spot — never`), with a reminder that withdrawals are disabled on agent accounts and funds must be transferred back to Main to move them out.
+  </Accordion>
+
+  <Accordion title="Accounts, Overview, Assets, Performance tabs">
+    The same breakdown tools you'd use on your main portfolio, filtered to the agent's activity.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  This is the best place to check on an AI agent's trading history at a glance, without it being mixed in with your own manual trades.
+</Note>
