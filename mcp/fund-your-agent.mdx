@@ -1,0 +1,46 @@
+---
+title: "Fund Your Agent"
+description: "Move USDT between your main account and the agent sub-account, instantly and with no network fee."
+---
+
+A fresh agent sub-account starts at **0 USDT**. There's nothing for your AI to trade or report on until you move some balance into it.
+
+<Note>
+  Read-only questions work fine against an empty account. You only need funds when you want the agent to trade.
+</Note>
+
+## Open the transfer panel
+
+From your **Agent Overview** dashboard, click **Fund your agent** (or **Deposit** / **Transfer**). This opens the **Transfer** panel, where you move funds between your main account and the agent sub-account.
+
+![Transfer panel, spot to AI spot account](/images/mcp/transfer-spot.png)
+
+![Transfer panel, spot to AI perpetuals account](/images/mcp/transfer-perp.png)
+
+| Field | What to choose |
+| --- | --- |
+| **Transfer from** | Your main Spot or Perp account |
+| **Transfer to** | The AI Spot Account or AI Perpetuals Account, depending on where your AI needs balance |
+| **Token** | The asset (usually USDT) and an amount, or click **MAX** |
+
+<Info>
+  **No fees, no delay.** Transfers between your main and agent accounts arrive instantly with no network fee — it's an internal move, not an on-chain transaction.
+</Info>
+
+## After funding
+
+Once funded, your Agent Overview updates to show the new balance, and a green confirmation banner replaces the "account is empty" warning:
+
+> Everything is working. Your agent can read the account and place orders on it, up to the balance you gave it.
+
+![Funded agent overview](/images/mcp/agent-overview-funded.png)
+
+You can fund the Spot side, the Perpetuals side, or both — whatever your AI needs for the questions or trades you want it to handle.
+
+## Moving funds back
+
+You can withdraw funds back to your main account from the same **Transfer** panel at any time.
+
+<Warning>
+  Only you can move funds out. The agent key itself can never initiate a withdrawal or transfer, regardless of the access level you granted it. If you ask your AI to withdraw, it will fail by design.
+</Warning>

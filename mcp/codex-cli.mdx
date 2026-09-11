@@ -1,0 +1,64 @@
+---
+title: "Install Codex CLI"
+description: "Set up OpenAI's Codex CLI on your machine before wiring in the Yellow.pro MCP server."
+---
+
+<Warning>
+  Before installing an AI CLI, make sure you've completed Yellow.pro's account setup first — connecting your wallet, creating a sub-account, and completing verification. See **[Agent Onboarding](/mcp/getting-started)** for the full walkthrough. The steps below assume your Yellow.pro account is already set up and you're ready to pair an AI agent to it.
+</Warning>
+
+If `codex --version` already works in your terminal, skip ahead to [Installation](/mcp/installation) and use `yellow-pro setup codex`. Otherwise, follow the steps below first.
+
+<Steps>
+  <Step title="Install">
+    Install Codex CLI globally via npm:
+
+    ```bash theme={null}
+    npm install -g @openai/codex
+    ```
+
+    Alternative install methods:
+
+    ```bash theme={null}
+    # macOS (Homebrew)
+    brew install --cask codex
+    ```
+
+    ```bash theme={null}
+    # Windows
+    winget install OpenAI.Codex
+    ```
+  </Step>
+
+  <Step title="Verify">
+    Open a **new** terminal window (a window that was already open won't see an updated `PATH`), then run:
+
+    ```bash theme={null}
+    codex --version
+    ```
+
+    <Warning>
+      If you see `command not found: codex`, npm's global bin directory likely isn't on your `PATH`. Check where npm installs global packages with `npm config get prefix`, then add `<that path>/bin` to your `PATH` (e.g. in `~/.zshrc`) and open a fresh terminal window.
+    </Warning>
+  </Step>
+
+  <Step title="Log in">
+    Run:
+
+    ```bash theme={null}
+    codex login
+    ```
+
+    This opens a browser-based sign-in flow using your ChatGPT account. Check that it worked with:
+
+    ```bash theme={null}
+    codex login status
+    ```
+
+    <Info>
+      For headless machines without a browser, use `codex login --device-auth` instead. To authenticate with an API key rather than a ChatGPT account, use `codex login --with-api-key` or set the `CODEX_API_KEY` environment variable.
+    </Info>
+  </Step>
+</Steps>
+
+Next: continue to [Installation](/mcp/installation) and run `yellow-pro setup codex` to register the Yellow.pro MCP server with Codex CLI.

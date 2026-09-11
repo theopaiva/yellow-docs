@@ -1,0 +1,382 @@
+---
+title: "Agent Onboarding"
+description: "Connect your wallet, create an agent sub-account, pair your AI client, and verify it works — the full walkthrough on yellow.pro."
+---
+
+Give your AI its own Yellow.pro trading account: a separate account under your login, with permissions you control.
+
+<Info>
+  **What this covers**
+
+  - Connect your wallet
+  - Create a dedicated agent sub-account
+  - Pair an AI client
+  - Verify that it works
+  - Fund the agent and try it out
+
+  **Estimated setup time:** about 10 minutes the first time.
+</Info>
+
+<Warning>
+  An agent sub-account is a separate account under your main login, with its own balance. Your AI only ever touches funds you move into that sub-account, **never your main account**. An agent can **never withdraw**, regardless of which permissions you grant it. Withdrawals always require your signature on the main account.
+</Warning>
+
+## Step 1 — Connect your wallet
+
+Go to [yellow.pro](https://yellow.pro) and click **Connect** in the top-right corner.
+
+![Connect button in the top-right of yellow.pro](/images/mcp/connect-button.png)
+
+Pick a wallet — MetaMask, Phantom, Rabby, or WalletConnect — or continue with **Google**.
+
+![Wallet selection dialog](/images/mcp/choose-wallet.png)
+
+If you connect a wallet, approve two prompts from the wallet extension:
+
+1. A connection request
+2. A signature request (`"Please sign this message to authenticate..."`)
+
+<Info>
+  **Signing is free.** The signature proves you own the wallet. It is not a transaction.
+</Info>
+
+Once connected, a welcome panel walks you through the quick path: deposit or convert to USDT, transfer spot to perpetual, and open your first position. You can follow it or skip it — click **Start trading** or **×** to dismiss.
+
+<Note>
+  None of those steps are required before setting up your agent.
+</Note>
+
+![Welcome to Yellow Pro panel](/images/mcp/welcome-yellow-pro.png)
+
+## Step 2 — Open the agent onboarding page
+
+Click **AI agent** in the top navigation bar.
+
+![AI agent link in the top navigation](/images/mcp/ai-agent-nav.png)
+
+This takes you to **Give your AI its own trading account**.
+
+![Agent onboarding landing page](/images/mcp/agent-onboarding-overview.png)
+
+The flow has four steps: **Agent sub-account**, **Connect**, **Verify**, and **Agent dashboard**.
+
+## Step 3 — Create your agent sub-account
+
+The page explains what your AI will be able to do:
+
+| Capability | What it means |
+| --- | --- |
+| **Reads markets** | Prices, order books, funding rates |
+| **Reads its own account** | Balances, positions, orders |
+| **Trades only when you switch it on** | Off by default |
+| **Withdrawals stay with you** | An agent key can never withdraw or transfer out, regardless of permissions |
+
+Click **Create your agent account**. This creates the account only — no key and no funds yet.
+
+![Create your agent account step](/images/mcp/create-agent-account.png)
+
+Once created, Step 1 turns green and shows your new account: an **agent account ID** in the form `agentic:0x...` under your main account, with a **balance** starting at `0 USDT`.
+
+<Note>
+  There is nothing to fund yet. You'll fund the account once your AI is connected.
+</Note>
+
+![Agent sub-account created and ready](/images/mcp/agent-account-ready.png)
+
+## Step 4 — Choose your AI and set its access
+
+Step 2, **Connect**, asks two questions.
+
+### Which AI are you using?
+
+Seven clients currently work, each with a one-command setup.
+
+| AI client | Setup |
+| --- | --- |
+| **Claude Code** | Recommended — one command, no file to edit |
+| **Generic AI** | Any MCP-compatible app |
+| **Codex CLI** | One command, TOML config |
+| **Gemini CLI** | One command, merges settings |
+| **Cursor** | One command, instant reload |
+| **Hermes** | One command, YAML config |
+| **OpenClaw** | One command, JSON5 config |
+
+![Choosing an AI client and access level](/images/mcp/choose-ai-and-access.png)
+
+### Should it be allowed to trade?
+
+<CardGroup cols={2}>
+  <Card title="Read-only" icon="eye">
+    Reads prices, positions and balances, and answers questions. Cannot trade.
+
+    Scopes: `read:spot`, `read:perp`
+  </Card>
+
+  <Card title="Trading on" icon="arrow-right-arrow-left">
+    Places and cancels orders using the agent account's available margin.
+
+    Adds: `trade:spot`, `trade:perp`
+  </Card>
+</CardGroup>
+
+<Note>
+  Start with read-only. You can change the access level later from the agent dashboard without redoing this flow.
+</Note>
+
+## Step 5 — Get your pairing code
+
+Yellow.pro generates a one-time pairing code and the exact command that redeems it, pre-filled with your selected client and permission choices.
+
+![Pairing code and copy command](/images/mcp/pairing-code.png)
+
+<Warning>
+  **This code is not your API key or secret.** It is a one-time claim that you redeem once. Redeeming it mints the actual key locally on your machine — Yellow.pro never sees or stores that key.
+
+  The code is single-use and expires in about 10 minutes, so don't generate it until you're ready for the next step. If it expires, click **Change and get a new code**.
+</Warning>
+
+Click **Copy command**, then continue to the section for your client.
+
+## Step 6 — Install your AI client, log in, and pair
+
+If your AI client isn't installed yet, set it up first:
+
+<CardGroup cols={2}>
+  <Card title="Install Claude Code CLI" icon="terminal" href="/mcp/claude-code-cli">
+    Recommended. Install, verify, and log in.
+  </Card>
+
+  <Card title="Install Codex CLI" icon="terminal" href="/mcp/codex-cli">
+    OpenAI's CLI, if that's your client.
+  </Card>
+</CardGroup>
+
+<Info>
+  **Claude Code and Claude Desktop are different applications.** Claude Desktop is the chat app with a window; Claude Code runs in your terminal. The pairing command registers with Claude Code specifically.
+</Info>
+
+### Claude Code walkthrough
+
+<Steps>
+  <Step title="Install Claude Code">
+    ```bash
+    curl -fsSL https://claude.ai/install.sh | bash
+    ```
+
+    ![Running the Claude Code installer](/images/mcp/claude-code-install-command.png)
+
+    ![Claude Code installed successfully](/images/mcp/claude-code-install-success.png)
+  </Step>
+
+  <Step title="Verify the install">
+    Open a **new** terminal window and run:
+
+    ```bash
+    claude --version
+    ```
+
+    You should see a version number such as `2.1.267`.
+
+    <Warning>
+      If you see `command not found`, add the install location to your `PATH`:
+
+      ```bash
+      echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
+      ```
+
+      Then open a fresh terminal and try `claude --version` again.
+    </Warning>
+  </Step>
+
+  <Step title="Log in">
+    Run:
+
+    ```bash
+    claude
+    ```
+
+    ![Starting Claude Code](/images/mcp/claude-code-run.png)
+
+    The first time you run Claude Code in a new folder it asks whether you trust the workspace. Choose **Yes, I trust this folder**.
+
+    ![Workspace trust prompt](/images/mcp/claude-code-trust-folder.png)
+
+    Next, choose **Claude account with subscription**.
+
+    ![Selecting a login method](/images/mcp/claude-code-login-method.png)
+
+    Complete the browser sign-in that opens, then click **Authorize**.
+
+    ![Authorizing Claude Code](/images/mcp/claude-code-authorize.png)
+
+    <Warning>
+      If you see `Claude Max or Pro is required to connect to Claude Code`, your Claude.ai account is on the free plan. Upgrade to **Pro, Max, Team, or Enterprise**, or sign in with an API key instead.
+    </Warning>
+
+    You'll return to the terminal logged in, and can pick a colour theme. This only affects how Claude Code looks, so any option is fine.
+
+    ![Choosing a colour theme](/images/mcp/claude-code-theme.png)
+
+    If billing shows **pay-per-use** instead of your plan, type `/login` inside the session. Once confirmed, exit back to the normal prompt:
+
+    ```bash
+    exit
+    ```
+  </Step>
+
+  <Step title="Run the pairing command">
+    Back in the same terminal — at the normal `%` prompt, **not inside Claude** — paste and run the command Yellow.pro gave you in Step 5. This installs the Yellow.pro MCP package and registers it with Claude Code in one go.
+
+    ![Pasting the pairing command](/images/mcp/pairing-command-paste.png)
+
+    ![Pairing command output](/images/mcp/pairing-command-output.png)
+
+    The confirmation shows the account type (`subaccount`), the granted scopes such as `read:spot` and `read:futures`, where the credential was saved locally, and whether trading was enabled.
+
+    <Note>
+      Whether trading is enabled is determined entirely by the permission level you selected in Step 4.
+    </Note>
+
+    <Warning>
+      **Restart required.** If the output includes `"restart_required": true`, exit the existing Claude session and run `claude` again so it picks up the new MCP server.
+    </Warning>
+  </Step>
+
+  <Step title="Confirm registration">
+    Run `claude`, then inside the session:
+
+    ```
+    /mcp
+    ```
+
+    `yellow_pro` should show as **connected**. That's enough to continue — you'll ask it something in Step 9.
+  </Step>
+</Steps>
+
+### Other supported clients
+
+The pairing command works the same way for all seven supported clients. Run the command Yellow.pro generated for your selected client. Manual configuration paths for Gemini CLI, Cursor, Hermes, and OpenClaw are on the [Installation](/mcp/installation) page.
+
+## Step 7 — Verify it's working
+
+Return to the Yellow.pro tab. Step 2 should now show **Connected**, and Step 3, **Verify**, becomes active.
+
+Click **Verify connection**. This runs a set of read-only checks against your new key.
+
+![Verify connection step](/images/mcp/verify-connection.png)
+
+<Info>
+  **Safe verification.** Nothing is created and no order is placed. These checks are read-only and safe to re-run anytime.
+</Info>
+
+The checks confirm that the agent sub-account exists, that an active key is connected, and that your AI has actually made a successful call.
+
+### If a check doesn't pass
+
+The most common causes are on the CLI side:
+
+<AccordionGroup>
+  <Accordion title="The AI client wasn't restarted">
+    If the client was already running when you paired it, look for `"restart_required": true` in the pairing output. Exit the client and start it again.
+  </Accordion>
+
+  <Accordion title="The pairing command didn't finish cleanly">
+    Scroll back in your terminal and check for an error before the `"connected": true` confirmation.
+  </Accordion>
+
+  <Accordion title="The command was run in the wrong place">
+    Make sure the pairing command was pasted into your normal shell prompt, not an active Claude or Codex session.
+  </Accordion>
+</AccordionGroup>
+
+Fix the issue, then click **Verify connection** again.
+
+## Step 8 — Open your agent dashboard
+
+Once verification passes, Step 4 changes to **Live**. Click **Open dashboard**.
+
+![Verification passed](/images/mcp/verification-passed.png)
+
+![Open dashboard button](/images/mcp/open-dashboard.png)
+
+You'll see your **Agent Overview**: the connected AI, key details, trading status, current portfolio, and transfer controls.
+
+![Agent Overview dashboard](/images/mcp/agent-overview.png)
+
+From the dashboard you can revoke the key, change its trading permission, fund or withdraw from the agent sub-account, and connect another AI to the same account.
+
+<Note>
+  If trading is off, the dashboard shows a **Trading OFF** badge and an **Enable trading** control. Turning it on applies to the agent account only.
+</Note>
+
+![Dashboard with trading off](/images/mcp/dashboard-trading-off.png)
+
+## Step 9 — See it in action
+
+A fresh agent sub-account starts with **0 USDT**. Click **Fund it** or **Deposit** on the dashboard to move balance from your main account before asking your AI to do anything that requires funds. See [Fund your agent](/mcp/fund-your-agent) for the full transfer flow.
+
+<Note>
+  Read-only questions work fine with a zero balance.
+</Note>
+
+Then return to your AI client and try it out.
+
+<Tabs>
+  <Tab title="Market question">
+    Ask: *"What's the funding rate on BTC-PERP?"*
+
+    Your AI reads live market data through the connected key.
+
+    ![Funding rate answer](/images/mcp/example-funding-rate.png)
+  </Tab>
+
+  <Tab title="Account question">
+    Ask: *"What's my balance?"*
+
+    ![Balance answer](/images/mcp/example-balance.png)
+
+    Or: *"What's my liquidation distance on my open positions?"*
+
+    ![Liquidation distance answer](/images/mcp/example-liquidation-distance.png)
+
+    Your AI reads the agent sub-account directly.
+  </Tab>
+
+  <Tab title="Place a trade">
+    If trading is enabled, ask the AI to place a small test order.
+
+    ![Placing an order](/images/mcp/example-place-order.png)
+
+    Then confirm the order appears in your dashboard.
+
+    ![Pending order in the dashboard](/images/mcp/pending-order.png)
+  </Tab>
+
+  <Tab title="Withdrawal boundary">
+    Ask your AI to withdraw funds to an external address. The request should fail, explaining that agent keys cannot withdraw and that withdrawals require your signature on the main account.
+
+    ![Withdrawal blocked](/images/mcp/example-withdrawal-blocked.png)
+  </Tab>
+</Tabs>
+
+Once you've asked it something real, return to Yellow.pro and click **Verify connection** again. Every check should now show as confirmed.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Fund your agent" icon="wallet" href="/mcp/fund-your-agent">
+    Move USDT between your main and agent accounts.
+  </Card>
+
+  <Card title="Manage your API keys" icon="key" href="/mcp/api-keys">
+    Review, freeze, or revoke keys.
+  </Card>
+
+  <Card title="Agentic portfolio" icon="chart-pie" href="/mcp/agentic-portfolio">
+    Track the agent's performance separately.
+  </Card>
+
+  <Card title="Troubleshooting" icon="wrench" href="/mcp/troubleshooting">
+    Fixes for the most common issues.
+  </Card>
+</CardGroup>
