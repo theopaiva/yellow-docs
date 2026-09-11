@@ -158,7 +158,6 @@
       },
       {
         "tab": "MCP",
-        "hidden": true,
         "groups": [
           {
             "group": "Getting Started",
