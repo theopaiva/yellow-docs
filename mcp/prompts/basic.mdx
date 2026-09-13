@@ -1,0 +1,201 @@
+---
+title: "Basic prompts"
+icon: "seedling"
+description: "Prompts 1 to 5: every step spelled out, post-only orders by default, and leverage at 5x or lower."
+---
+
+Each prompt reads before it writes, spells out every rule, and waits for your confirm.
+
+<Info>
+  Change the values in **[brackets]**, then paste the prompt into your AI client. Nothing is placed until you type **confirm**. New here? Read [Before you paste](/mcp/prompts/overview#before-you-paste) first.
+</Info>
+
+## 1. Check I'm ready to trade
+
+A read-only pass over your permissions, balances, position modes, open orders and positions. It places nothing.
+
+**Markets:** Spot and Perps · **What it does:** Read-only
+
+```text Prompt
+Before I set up any trades on Yellow Pro, run a read-only readiness check. Don't place, cancel or change anything.
+
+1. Connection and permissions: confirm the connection is healthy and list my API key's live scopes. Tell me in plain words what they let me do and what they don't (spot trading, perps trading, moving funds between Spot and Perps).
+2. Balances: show my Spot and Perps balances separately, with what's available versus locked in orders or margin.
+3. Markets I plan to trade: [ETHUSDT, BTCUSDT-PERP]. For each one, give the minimum order size, step size, tick size and minimum order value. For perps, add the max leverage and the funding interval.
+4. Position mode: for each perp market above, tell me whether it's HEDGE or ONE_WAY. Look in my perpetual accounts first, then at the position_mode on my open orders in that market. If you can't find it, say so instead of guessing.
+5. Open orders and positions: list them. For each position, show entry, mark, size, leverage, unrealized PnL and how far the mark price is from the liquidation price, in %.
+6. Flag anything that would block a trade, such as a missing trade scope, no funds in the account a market uses, or an order sitting far from the current price.
+
+Finish with a one-line "ready" or "not ready" verdict per market, and the reason.
+```
+
+<CardGroup cols={2}>
+  <Card title="Stays on the exchange" icon="building-columns">
+    Nothing changes. It only reads.
+  </Card>
+
+  <Card title="Needs you" icon="user-check">
+    Run it again at the start of each session. Balances and modes can change in between.
+  </Card>
+</CardGroup>
+
+## 2. Buy-the-dip ladder
+
+Splits a budget into post-only bids stepped below the current price, rounded to the market's rules.
+
+**Markets:** Spot or Perps · **What it does:** Places orders
+
+```text Prompt
+Set up a buy-the-dip ladder on Yellow Pro.
+
+Market: [ETHUSDT]
+Total budget: [100] USDT
+Number of orders: [4]
+Spacing: first order [2]% below the current price, then every [2]% lower
+
+Rules:
+- Read before you write: check my API key can trade this market, the market's rules and my available balance (Spot for spot markets, Perps for -PERP markets).
+- Show me every order in a table and wait for me to type "confirm". Place nothing before that.
+- Post-only limit orders only. No market orders.
+- If an order is rejected, show me the exact error, tell me what was and wasn't placed, and stop. Don't retry with different numbers.
+
+Steps:
+1. Use the middle of the order book as the current price. Cross-check it against the 24h ticker and tell me if they differ by more than 1%.
+2. Split the budget evenly. Convert each slice to the base asset, round the amount down to the step size and the price to the tick size, and check each order meets the minimum order value. If some don't, use fewer orders and tell me.
+3. For a perp market: use [2]x leverage, set with set_leverage rather than the order's leverage field. Check the position mode first (HEDGE uses direction long, ONE_WAY uses both).
+4. Table: price, amount in the base asset, value in USDT, % below the current price, plus my average entry if every order fills.
+5. After placing, list my open orders on this market so I can see them resting.
+```
+
+<CardGroup cols={2}>
+  <Card title="Stays on the exchange" icon="building-columns">
+    The resting bids, until they fill or you cancel them.
+  </Card>
+
+  <Card title="Needs you" icon="user-check">
+    Nothing adds a stop when a bid fills. Use [prompt 4](/mcp/prompts/basic) for spot or [prompt 9](/mcp/prompts/intermediate) for perps.
+  </Card>
+</CardGroup>
+
+## 3. Dollar-cost averaging
+
+One round of a fixed-USDT buy with a price cap, then a running tally of what you've bought and your average cost.
+
+**Markets:** Spot · **What it does:** Places orders, Repeatable
+
+```text Prompt
+Run one round of my dollar-cost averaging plan on Yellow Pro.
+
+Market: [ETHUSDT]
+Amount per round: [25] USDT
+Price cap: don't buy above [3000] USDT per [ETH] (delete this line to buy at any price)
+Count my buys since: [2026-09-01]
+
+Rules:
+- Check my API key can trade spot and my Spot account has the round amount in USDT available. If not, stop and tell me how much is missing.
+- Show me the order and wait for me to type "confirm", even when this runs on a schedule.
+- If the order is rejected, show me the exact error and stop.
+
+Steps:
+1. If a bid from an earlier round is still resting unfilled, show it and ask whether to cancel it before placing a new one.
+2. Read the best bid and best ask. If the best ask is above my price cap, skip this round and say so.
+3. Size the order: amount per round divided by the price, rounded down to the step size, at or above the minimum order value.
+4. Place a post-only limit buy at the best bid. If I say "fill now", use a limit at the best ask instead.
+5. Report my progress from my trade history on this market since the date above: total [ETH] bought, USDT spent, average cost and fees paid.
+
+Optional: if your AI app can run a prompt on a schedule (for example /loop in Claude Code), repeat this every [24h]. In other apps, paste it again each round.
+```
+
+<CardGroup cols={2}>
+  <Card title="Stays on the exchange" icon="building-columns">
+    An unfilled bid rests until it fills or you cancel it.
+  </Card>
+
+  <Card title="Needs you" icon="user-check">
+    The next round. Paste it again, or schedule it where your app supports that.
+  </Card>
+</CardGroup>
+
+## 4. Stop on a spot holding
+
+Places a sell stop under a coin you hold, so a drop triggers an exit without the chat open.
+
+**Markets:** Spot · **What it does:** Places orders
+
+```text Prompt
+Put a protective stop on a spot holding on Yellow Pro.
+
+Market: [ETHUSDT]
+Amount: [all available] [ETH]
+Trigger: [8]% below the current price, or at [____] USDT
+Order type: [stop market]. Use "stop limit" with a limit price if you'd rather cap the fill price and accept that it may not fill.
+
+Rules:
+- Check my API key can trade spot and read my available [ETH]. Tell me if some of it is already locked in other orders.
+- Show me the order and wait for me to type "confirm".
+- If the order is rejected, show me the exact error and stop.
+
+Steps:
+1. Work out the trigger from the middle of the order book and round it to the tick size. Round the amount down to the step size and check the minimum order value.
+2. Show the trigger price, the amount, its estimated USDT value at the trigger, and the distance from the current price in %.
+3. Place it as a sell stop order.
+4. Confirm it shows in my open orders, waiting for its trigger.
+
+Remind me that a stop market can fill below the trigger when the book is thin or moving fast, and that a stop limit may not fill at all.
+```
+
+<CardGroup cols={2}>
+  <Card title="Stays on the exchange" icon="building-columns">
+    The stop. It triggers on the exchange whether or not the chat is open.
+  </Card>
+
+  <Card title="Needs you" icon="user-check">
+    Raising it as the price climbs. There are no trailing stops, so run it again with a new trigger.
+  </Card>
+</CardGroup>
+
+## 5. Perp trade sized to your risk
+
+Works out position size from the loss you accept at your stop, checks liquidation sits beyond it, then places the entry and its protection.
+
+**Markets:** Perps · **What it does:** Places orders
+
+```text Prompt
+Open a perpetual position on Yellow Pro, sized from how much I'm prepared to lose.
+
+Market: [BTCUSDT-PERP]
+Direction: [long]
+Entry: limit at [____] USDT (or "best bid" for a long, "best ask" for a short, post-only)
+Stop-loss: [____] USDT
+Take-profit: [____] USDT (optional)
+Max loss if the stop is hit: [10] USDT
+Leverage: [3]x (5x or lower)
+
+Rules:
+- Read before you write: check I can read and trade futures, my available Perps balance and the market's rules (step size, tick size, minimum order value, max leverage, price band).
+- Show me the full plan and wait for me to type "confirm". Place nothing before that.
+- If any order is rejected, show me the exact error, tell me what was and wasn't placed, and stop.
+
+Steps:
+1. Find the position mode: look in my perpetual accounts, then at the position_mode on my open orders in this market. If you can't find it, ask me. HEDGE uses direction long or short, ONE_WAY uses both.
+2. Size it: amount = max loss ÷ distance between entry and stop, rounded down to the step size. Add estimated entry and exit fees and tell me the real loss at the stop.
+3. Check the margin at my leverage fits my available balance, and that the estimated liquidation price is well beyond my stop. If the stop isn't clearly between entry and liquidation, stop and tell me.
+4. The plan: entry order, protective orders, size in the base asset, notional in USDT, margin used, estimated liquidation price and fees.
+5. After "confirm": set leverage with set_leverage, then place the entry.
+6. Protective orders need a position to protect. If the entry filled, place a reduce-only stop market at my stop-loss and, if I gave one, a reduce-only take-profit trigger at my target, both for the full size. If the entry is resting, say so and give me a one-line prompt to paste once it fills.
+7. List my open orders and position on this market, and tell me which parts now live on the exchange and which depend on me coming back.
+```
+
+<CardGroup cols={2}>
+  <Card title="Stays on the exchange" icon="building-columns">
+    The entry, then the stop and take-profit once they're placed.
+  </Card>
+
+  <Card title="Needs you" icon="user-check">
+    When the stop or the take-profit fills, the other one stays live. Cancel it yourself or run [prompt 10](/mcp/prompts/intermediate).
+  </Card>
+</CardGroup>
+
+<Warning>
+  These prompts are examples, not investment advice. Make trading decisions based on your own judgment. Trading involves risk of loss, and you are responsible for every order you or your assistant places.
+</Warning>

@@ -1,0 +1,196 @@
+---
+title: "Intermediate prompts"
+icon: "chess-knight"
+description: "Prompts 6 to 10: shorter guardrails and more moving parts — breakouts, grids, funding carry, scaling out, and risk reviews."
+---
+
+Shorter rules, more moving parts. You still confirm every order, and a rejection still stops the run.
+
+<Info>
+  Change the values in **[brackets]**, then paste the prompt into your AI client. Nothing is placed until you type **confirm**. New here? Read [Before you paste](/mcp/prompts/overview#before-you-paste) first.
+</Info>
+
+## 6. Range breakout entry
+
+Reads the recent candle range and parks stop-limit entries just outside it, each sized to a fixed risk.
+
+**Markets:** Perps · **What it does:** Places orders
+
+```text Prompt
+Set a range-breakout entry on Yellow Pro.
+
+Market: [ETHUSDT-PERP]
+Range: the last [30] candles on the [4h] timeframe
+Buffer: [0.3]% beyond the range
+Side: [both] (long above the high, short below the low), or just [long] or [short]
+Risk per side: [15] USDT
+Leverage: [3]x
+
+Rules: check permissions, position mode, market rules and available margin first; show the order table and wait for "confirm"; on any rejection show the error and stop.
+
+Steps:
+1. Pull the candles (candle timestamps are in milliseconds). Report the range high, low, midpoint and width in %. If the latest candle already closed outside the range, the breakout has happened: place nothing and tell me.
+2. Triggers: long at the range high plus the buffer, short at the range low minus the buffer, rounded to the tick size.
+3. Stops: the range midpoint for both sides. Size each side so a stop-out costs my risk amount (amount = risk ÷ distance from trigger to midpoint, rounded down to the step size) and include fees in the reported loss.
+4. Use stop-limit orders with the limit [0.2]% past the trigger, so a gap can't fill me at any price. Set leverage with set_leverage before placing.
+5. In ONE_WAY mode, warn me that if both sides trigger they net against each other.
+6. After placing, list my open orders. Stops can only go on once a trigger fills, so give me the one-line prompt to paste for each side.
+
+When one side triggers, the other order stays live until I cancel it.
+```
+
+<CardGroup cols={2}>
+  <Card title="Stays on the exchange" icon="building-columns">
+    Both trigger orders.
+  </Card>
+
+  <Card title="Needs you" icon="user-check">
+    Adding the stop after a trigger fills, and cancelling the side you no longer want.
+  </Card>
+</CardGroup>
+
+## 7. Range grid
+
+Buys the lower half of a range in steps and sells each fill one step higher. Each run places or refills the grid.
+
+**Markets:** Perps · **What it does:** Places orders, Repeatable
+
+```text Prompt
+Run my range grid on Yellow Pro. Each run places or refills the grid; nothing happens between runs.
+
+Market: [SOLUSDT-PERP]
+Range: [____] to [____] USDT
+Levels: [6] (keep it modest; accounts have an open-order limit)
+Size per level: [0.5] [SOL]
+Leverage: [2]x
+
+How it works:
+- Buy levels sit evenly spaced inside the range below the current price, as post-only limit buys.
+- Each filled buy gets a reduce-only post-only sell one grid step above it.
+- Each filled sell gets its buy put back one step below.
+- Tag every order with a client_order_id starting "grid-[SOL]-" plus the level and a short timestamp, so the next run can find them.
+
+Rules: check permissions, Perps balance, position mode (HEDGE uses direction long, ONE_WAY uses both) and market rules first; show the order table and wait for "confirm"; on any rejection, including the open-order limit, show the error and stop.
+
+Each run:
+1. Set leverage with set_leverage.
+2. Read my open orders and recent trades on this market and work out which levels filled since the last run.
+3. If the price is outside the range, place nothing and tell me the grid is paused until I reset the range.
+4. Show the whole grid as a table: each level's price, side and status (resting, filled, to place), plus my grid position and its unrealized PnL.
+5. After "confirm", place the missing orders and list what's resting.
+
+Optional: repeat every [1h] if your AI app can run a prompt on a schedule (for example /loop in Claude Code). Otherwise paste it again to refill.
+```
+
+<CardGroup cols={2}>
+  <Card title="Stays on the exchange" icon="building-columns">
+    The resting grid orders.
+  </Card>
+
+  <Card title="Needs you" icon="user-check">
+    Refills. Filled levels stay empty until the next run.
+  </Card>
+</CardGroup>
+
+## 8. Funding carry
+
+Checks settled funding and round-trip fees for a spot long plus an equal perp short, and lays out the numbers before anything is placed.
+
+**Markets:** Spot and Perps · **What it does:** Places orders, May transfer
+
+```text Prompt
+Check a funding carry trade on [ETH] on Yellow Pro, and set it up only if I say so.
+
+The trade: buy [0.1] [ETH] on ETHUSDT (spot) and short the same amount on ETHUSDT-PERP at [1]x. Price moves roughly cancel out, and the short collects funding while the rate is positive (positive funding means longs pay shorts).
+
+Rules: read-only until I type "set it up"; after that, show every order or transfer and wait for "confirm"; on any rejection show the error and stop.
+
+Steps:
+1. Funding: take the last settled rate from previous_funding_rate on ETHUSDT-PERP and the recent trend from the funding rate history. Treat the current interval's rate as an estimate until it settles and don't base anything on it. Show the last [9] intervals, how many were positive, and the average.
+2. Costs: using my fee tier, work out the fees to open and later close both legs, and how many 8-hour funding intervals at the recent average it takes to cover them.
+3. Lay out the conditions: average rate, break-even in intervals and days, and what happens if funding turns negative. Don't tell me whether to take the trade.
+4. On "set it up": check I have USDT in Spot for the spot leg and margin in Perps for the short. If one side is short of funds, propose a transfer between my Spot and Perps accounts for the exact amount.
+5. Place both legs as post-only limits at the best price on each book, the same [ETH] amount rounded to both markets' step sizes. In HEDGE mode the perp leg uses direction short. Warn me that the legs can fill at different times, leaving me exposed to price until both are in.
+6. Show both legs and my net [ETH] exposure, which should be close to zero.
+
+Later, to track it: "How much funding has my ETHUSDT-PERP short received since [date]? Use my funding fee transactions: FUNDING_FEE_IN is received, FUNDING_FEE_OUT is paid."
+```
+
+<CardGroup cols={2}>
+  <Card title="Stays on the exchange" icon="building-columns">
+    Both legs.
+  </Card>
+
+  <Card title="Needs you" icon="user-check">
+    Watching funding. If it turns negative the short starts paying, so re-run step 1 to check.
+  </Card>
+</CardGroup>
+
+## 9. Scale out and move the stop
+
+Adds a take-profit ladder to an open position and replaces its stop without leaving the position unprotected in between.
+
+**Markets:** Perps · **What it does:** Places and cancels orders
+
+```text Prompt
+Manage an open perp position on Yellow Pro: take profit in steps and move my stop.
+
+Market: [BTCUSDT-PERP]
+Take-profit ladder: close [1/3] at [+2]%, [1/3] at [+4]% and the rest at [+6]% from my entry price
+New stop: [my entry price] (breakeven), or at [____] USDT
+
+Rules: show the before and after order list for this market and wait for "confirm"; on any rejection, stop and tell me exactly which orders are live.
+
+Steps:
+1. Read my position on this market (direction, size, entry, mark, liquidation price) and every open order on it. If there's no position, stop.
+2. Build the ladder as reduce-only post-only limits (sells for a long, buys for a short). In HEDGE mode, use the position's direction. Split the size by the step size and put any rounding remainder on the last level. Skip levels the price has already passed and tell me.
+3. Stop: place the new reduce-only stop market first, and cancel the old stop only once the new one shows as resting, so the position is never left without one. If the new stop would trigger straight away at the current mark, tell me and don't place it.
+4. After "confirm", place the ladder and the new stop, verify both, then cancel the old stop.
+
+Each take-profit that fills leaves the stop sized for the full position. It's reduce-only, so it can't open a new position, but run prompt 10 after fills to tidy up.
+```
+
+<CardGroup cols={2}>
+  <Card title="Stays on the exchange" icon="building-columns">
+    The take-profit ladder and the new stop.
+  </Card>
+
+  <Card title="Needs you" icon="user-check">
+    Resizing the stop after partial fills. Prompt 10 flags it.
+  </Card>
+</CardGroup>
+
+## 10. Risk review and flatten
+
+Margin ratio, liquidation distance, unprotected positions, leftover orders and funding received or paid, with a market-scoped flatten command.
+
+**Markets:** Perps · **What it does:** Read-only until you flatten, Repeatable
+
+```text Prompt
+Run a risk review of my Yellow Pro perps account. It's read-only unless I use the flatten command at the end.
+
+1. Account: equity, available balance and margin ratio (total maintenance margin ÷ equity; liquidation starts at 100%).
+2. Positions: market, direction, size, leverage, entry, mark, unrealized PnL and the distance from mark to liquidation price in %. Flag anything closer than [15]%.
+3. Protection: does each position have a reduce-only stop resting? Flag any that don't.
+4. Clean-up: list orders that no longer make sense, such as a reduce-only order on a market where I have no position, a take-profit left behind after its stop filled, or a limit more than [10]% from the current price. Propose cancelling them one at a time by order ID and wait for "confirm".
+5. Funding over the last [24] hours from my funding fee transactions (they take Unix timestamps in seconds): received and paid per market.
+6. Close with the biggest risks, most urgent first, one line each.
+
+Flatten command: if I reply "FLATTEN [market]", cancel all open orders on that market and close its positions, always passing the market to both. Show me what will be closed and the estimated fill first, and wait for "confirm". Never run either without a market.
+
+Optional: repeat every [4h] if your AI app can run a prompt on a schedule (for example /loop in Claude Code).
+```
+
+<CardGroup cols={2}>
+  <Card title="Stays on the exchange" icon="building-columns">
+    Nothing changes unless you flatten.
+  </Card>
+
+  <Card title="Needs you" icon="user-check">
+    The next review. Nothing alerts you in between.
+  </Card>
+</CardGroup>
+
+<Warning>
+  These prompts are examples, not investment advice. Make trading decisions based on your own judgment. Trading involves risk of loss, and you are responsible for every order you or your assistant places.
+</Warning>

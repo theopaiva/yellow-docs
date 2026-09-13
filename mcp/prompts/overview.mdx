@@ -1,0 +1,77 @@
+---
+title: "Strategy prompts"
+icon: "wand-magic-sparkles"
+description: "Ten ready-to-paste prompts for Claude Code, Cursor, Codex CLI, or any MCP client connected to Yellow.pro — from a read-only readiness check to grids and funding carry."
+---
+
+Ten prompts to paste into Claude Code, Cursor, Codex CLI or any other MCP client connected to Yellow.pro. Change the values in brackets, then paste. Your assistant reads the market rules, sizes and rounds each order, and shows you the table before anything is placed.
+
+Prompts 1 to 5 are **Basic**: every step is spelled out, orders are post-only by default and leverage stays at 5x or lower. Prompts 6 to 10 are **Intermediate**: shorter guardrails and more moving parts. Nothing is placed in either tier until you type **confirm**.
+
+## Before you paste
+
+<CardGroup cols={2}>
+  <Card title="Connect" icon="plug">
+    Install `@yellow-pro/yellow-pro-mcp` and register it with your AI app. See [Installation](/mcp/installation), or the [README on GitHub](https://github.com/layer-3/yellow-pro-mcp) for the steps for each client.
+  </Card>
+
+  <Card title="Scope the key" icon="key-skeleton">
+    Read scopes are enough for prompt 1 and the review in prompt 10. Add `trade:spot` and `trade:futures` to place orders, and `transfer:spot-perp` for prompt 8. Leave `withdraw:spot` off. The connector has no withdrawal tool, so nothing in it can send funds to an outside address. Manage scopes in [API Keys](/mcp/api-keys).
+  </Card>
+
+  <Card title="Turn on trading" icon="toggle-on">
+    Order tools load only when `YELLOW_PRO_ENABLE_TRADING=true`. [Pairing](/mcp/getting-started) turns this on for you, so on that path the key's scopes are what limit it. Practise first with `YELLOW_PRO_SANDBOX=true`. See [Configuration](/mcp/configuration).
+  </Card>
+
+  <Card title="Run prompt 1 first" icon="play" href="/mcp/prompts/basic">
+    It checks permissions, balances, position modes and open orders without changing anything, then tells you market by market whether you're ready.
+  </Card>
+</CardGroup>
+
+## The prompts
+
+| # | Prompt | Markets | What it does |
+| --- | --- | --- | --- |
+| 1 | [Check I'm ready to trade](/mcp/prompts/basic) | Spot and Perps | Read-only |
+| 2 | [Buy-the-dip ladder](/mcp/prompts/basic) | Spot or Perps | Places orders |
+| 3 | [Dollar-cost averaging](/mcp/prompts/basic) | Spot | Places orders, repeatable |
+| 4 | [Stop on a spot holding](/mcp/prompts/basic) | Spot | Places orders |
+| 5 | [Perp trade sized to your risk](/mcp/prompts/basic) | Perps | Places orders |
+| 6 | [Range breakout entry](/mcp/prompts/intermediate) | Perps | Places orders |
+| 7 | [Range grid](/mcp/prompts/intermediate) | Perps | Places orders, repeatable |
+| 8 | [Funding carry](/mcp/prompts/intermediate) | Spot and Perps | Places orders, may transfer |
+| 9 | [Scale out and move the stop](/mcp/prompts/intermediate) | Perps | Places and cancels orders |
+| 10 | [Risk review and flatten](/mcp/prompts/intermediate) | Perps | Read-only until you flatten, repeatable |
+
+<CardGroup cols={2}>
+  <Card title="Basic prompts" icon="seedling" href="/mcp/prompts/basic">
+    Prompts 1 to 5. Every step spelled out, post-only by default, leverage at 5x or lower.
+  </Card>
+
+  <Card title="Intermediate prompts" icon="chess-knight" href="/mcp/prompts/intermediate">
+    Prompts 6 to 10. Shorter guardrails and more moving parts.
+  </Card>
+</CardGroup>
+
+## Good to know
+
+### Market names
+
+Spot markets use the pair name: `ETHUSDT`, `WBTCUSDT`, `YELLOWUSDT`. Perpetuals add `-PERP`: BTC, ETH, SOL, XRP, BNB, DOGE, LINK, SUI, HYPE and TAO, as in `BTCUSDT-PERP`. Amounts are in the base asset (ETH for `ETHUSDT`), and Spot and Perps balances are separate. This list was checked on 11 September 2026; ask your assistant for the current one.
+
+### What the connector doesn't do
+
+- It answers when you ask. Nothing runs between your messages, so it can't alert you or react to price.
+- Stops and take-profits are separate orders. There are no one-cancels-other or trailing orders, so when one fills, cancel the other yourself.
+- Perpetuals trade on cross margin through the connector.
+- Hedge or one-way mode is set in the Yellow.pro app, not by your assistant.
+- Orders can't be edited. To move one, cancel it and place a new one.
+- Removing the connector doesn't revoke the key. Revoke it in the Yellow.pro app — see [API Keys](/mcp/api-keys).
+
+<Warning>
+  These prompts are examples, not investment advice. Make trading decisions based on your own judgment. Trading involves risk of loss, and you are responsible for every order you or your assistant places. Read [Risk and safety](/mcp/risk-and-safety) before enabling trading.
+</Warning>
+
+<Note>
+  Checked against `yellow-pro-mcp` 0.1.3 on 11 September 2026.
+</Note>

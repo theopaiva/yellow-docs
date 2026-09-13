@@ -186,6 +186,14 @@
             ]
           },
           {
+            "group": "Strategy Prompts",
+            "pages": [
+              "mcp/prompts/overview",
+              "mcp/prompts/basic",
+              "mcp/prompts/intermediate"
+            ]
+          },
+          {
             "group": "Reference",
             "pages": [
               "mcp/tools",
