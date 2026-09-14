@@ -43,7 +43,7 @@ Finish with a one-line "ready" or "not ready" verdict per market, and the reason
 
 Splits a budget into post-only bids stepped below the current price, rounded to the market's rules.
 
-**Markets:** Spot or Perps · **What it does:** Places orders
+**Markets:** Spot and Perps · **What it does:** Places orders
 
 ```text Prompt
 Set up a buy-the-dip ladder on Yellow Pro.
@@ -81,7 +81,7 @@ Steps:
 
 One round of a fixed-USDT buy with a price cap, then a running tally of what you've bought and your average cost.
 
-**Markets:** Spot · **What it does:** Places orders, Repeatable
+**Markets:** Spot and Perps · **What it does:** Places orders, Repeatable
 
 ```text Prompt
 Run one round of my dollar-cost averaging plan on Yellow Pro.
@@ -120,7 +120,7 @@ Optional: if your AI app can run a prompt on a schedule (for example /loop in Cl
 
 Places a sell stop under a coin you hold, so a drop triggers an exit without the chat open.
 
-**Markets:** Spot · **What it does:** Places orders
+**Markets:** Spot and Perps · **What it does:** Places orders
 
 ```text Prompt
 Put a protective stop on a spot holding on Yellow Pro.
@@ -158,7 +158,7 @@ Remind me that a stop market can fill below the trigger when the book is thin or
 
 Works out position size from the loss you accept at your stop, checks liquidation sits beyond it, then places the entry and its protection.
 
-**Markets:** Perps · **What it does:** Places orders
+**Markets:** Spot and Perps · **What it does:** Places orders
 
 ```text Prompt
 Open a perpetual position on Yellow Pro, sized from how much I'm prepared to lose.

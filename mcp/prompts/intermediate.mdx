@@ -14,7 +14,7 @@ Shorter rules, more moving parts. You still confirm every order, and a rejection
 
 Reads the recent candle range and parks stop-limit entries just outside it, each sized to a fixed risk.
 
-**Markets:** Perps · **What it does:** Places orders
+**Markets:** Spot and Perps · **What it does:** Places orders
 
 ```text Prompt
 Set a range-breakout entry on Yellow Pro.
@@ -53,7 +53,7 @@ When one side triggers, the other order stays live until I cancel it.
 
 Buys the lower half of a range in steps and sells each fill one step higher. Each run places or refills the grid.
 
-**Markets:** Perps · **What it does:** Places orders, Repeatable
+**Markets:** Spot and Perps · **What it does:** Places orders, Repeatable
 
 ```text Prompt
 Run my range grid on Yellow Pro. Each run places or refills the grid; nothing happens between runs.
@@ -130,7 +130,7 @@ Later, to track it: "How much funding has my ETHUSDT-PERP short received since [
 
 Adds a take-profit ladder to an open position and replaces its stop without leaving the position unprotected in between.
 
-**Markets:** Perps · **What it does:** Places and cancels orders
+**Markets:** Spot and Perps · **What it does:** Places and cancels orders
 
 ```text Prompt
 Manage an open perp position on Yellow Pro: take profit in steps and move my stop.
@@ -164,7 +164,7 @@ Each take-profit that fills leaves the stop sized for the full position. It's re
 
 Margin ratio, liquidation distance, unprotected positions, leftover orders and funding received or paid, with a market-scoped flatten command.
 
-**Markets:** Perps · **What it does:** Read-only until you flatten, Repeatable
+**Markets:** Spot and Perps · **What it does:** Read-only until you flatten, Repeatable
 
 ```text Prompt
 Run a risk review of my Yellow Pro perps account. It's read-only unless I use the flatten command at the end.
